@@ -11,6 +11,7 @@
 		<result column="user_mail" property="eMail" />
 		<result column="user_gender" property="gender" />
 		<result column="user_num" property="membershipNumber" />
+		<result column="car_num" property="carNumber" />
 	</resultMap>
 
 	<!-- //로그인 -->
@@ -24,7 +25,7 @@
 		insert into USER_
 		values(#{userId}, #{name}, #{passwd}, #{phoneNumber},
 		#{gender},
-		#{eMail}, 1, #{membershipNumber},'g')
+		#{eMail}, 1, #{membershipNumber},'register')
 	</insert>
 
 	<!-- //회원가입 ID 중복검사 -->
@@ -46,9 +47,10 @@
 		${kind} like '%' || #{search} || '%'
 	</select>
 
-	<!-- 비밀번호 체크 -->
-    <select id="checkPasswd" parameterType="string" resultType="string">
-    	select * from USER_ where user_pw = #{passwd}
+	<!-- //아이디 조회로 신원확인 후 비밀번호 찾기 -->
+	<select id="getUser" parameterType="user">
+		select * from USER_ where
+		user_id = #{userId}
 	</select>
 
 	<!-- //비밀번호 변경 -->
@@ -57,11 +59,18 @@
 		= #{passwd} where user_id = #{userId}
 	</update>
 	
-	<!-- 비밀번호 찾기 아이디인증용 아이디 조회 -->
-	<select id="searchId" parameterType="string" resultType="string">
-    	select user_id from USER_ where user_id = #{userId}
-	</select>
-
-
+	<!--// mypage 회원번호 불러오기 -->
+	<select id="getMembershipNumber" parameterType="String" resultType="String">
+        SELECT user_num, user_mail, car_num
+        FROM USER_
+        WHERE user_id = #{userId}
+    </select>
+    
+    <!-- //차량 번호 업데이트 -->
+	<update id="updateCarNumber" parameterType="user">
+    	UPDATE USER_ 
+   		SET car_num = #{carNumber} 
+    	WHERE user_id = #{userId}
+	</update>
 
 </mapper>

@@ -7,66 +7,71 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="./login_css/join.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-   <script>
-	   //아이디 값이 정상인지 체크하는 함수
-        //1. 글자수 8~20글자 사이
-        //2. 숫자만 쓰면 X
-      function checkId() {
-    let id = $("#userid")[0]; // jQuery 객체를 DOM 요소로 변환
-    let id_result = $(".id_result")[0];
-    let regExp = /^[a-z0-9]{8,12}$/; // 영소문자와 숫자만 허용하는 정규식
+<script>
+    $(document).ready(function() {
+        let isIdAvailable = false; // 아이디 사용 가능 여부를 저장하는 변수
 
-    if (id.value.length < 8 || id.value.length > 12) {
-        id_result.innerHTML = "글자수는 8~12글자 사이로 입력해주세요.";
-        id_result.classList.remove("true");
-        id_result.classList.add("false");
-        return false;
-    }
+        function updateSubmitButtonState() {
+            let submitButton = $("button.send")[0]; // 완료 버튼 엘리먼트
 
-    if (!regExp.test(id.value)) {
-        id_result.innerHTML = "영소문자와 숫자만 입력할 수 있습니다.";
-        id_result.classList.remove("true");
-        id_result.classList.add("false");
-        return false;
-    }
-	//ajax 체크
-	var $mid = $("#userid");
-	 $.ajax({
-            type: "POST", // http 방식 
-            url: "/join/checkid", // ajax 통신 url
-            data: { // ajax 내용 => 파라미터 : 값 이라고 생각해도 무방
-                "type": "user",
-                "id": $mid.val()
-            },
-            success: function(data) {
-                if (data != "0") { // 1이면 중복
-                    $(".id_result").html("<span id='check'>이미 존재하는 아이디입니다</span>");
-                    $("#check").css({
-                        "color": "#FA3E3E",
-                        "font-weight": "bold",
-                        "font-size": "10px"
-                    });
-                } else { // 아니면 중복아님
-                    $(".id_result").html("<span id='check'>사용가능한 아이디입니다</span>");
-                    $("#check").css({
-                        "color": "#0D6EFD",
-                        "font-weight": "bold",
-                        "font-size": "10px"
-                    });
-                }
+            if (isIdAvailable && checkPass() && checkTel()) { 
+                submitButton.disabled = false; // 모든 조건이 충족되면 버튼 활성화
+            } else {
+                submitButton.disabled = true; // 조건이 충족되지 않으면 버튼 비활성화
             }
-        });
-	
-	
-    return true;
-}
-/*
-            1. 두번 입력한 암호가 서로 일치하는지?
-            2. 암호도 8~20글자만 허용
-            3. 특수문자가 포함되어 있는지?
-        */
+        }
+
+        function checkId() {
+            let id = $("#userid")[0];
+            let id_result = $(".id_result")[0];
+            let regExp = /^[a-z0-9]{8,12}$/; // 영소문자와 숫자만 허용하는 정규식
+
+            if (id.value.length < 8 || id.value.length > 12) {
+                id_result.innerHTML = "글자수는 8~12글자 사이로 입력해주세요.";
+                id_result.classList.remove("true");
+                id_result.classList.add("false");
+                isIdAvailable = false;
+            } else if (!regExp.test(id.value)) {
+                id_result.innerHTML = "영소문자와 숫자만 입력할 수 있습니다.";
+                id_result.classList.remove("true");
+                id_result.classList.add("false");
+                isIdAvailable = false;
+            } else {
+                var $mid = $("#userid");
+                $.ajax({
+                    type: "POST",
+                    url: "/join/checkid",
+                    data: {
+                        "type": "user",
+                        "id": $mid.val()
+                    },
+                    success: function(data) {
+                        if (data != "0") { // 1이면 중복
+                            $(".id_result").html("<span id='check'>이미 존재하는 아이디입니다</span>");
+                            $("#check").css({
+                                "color": "#FA3E3E",
+                                "font-weight": "bold",
+                                "font-size": "10px"
+                            });
+                            isIdAvailable = false;
+                        } else { // 아니면 중복아님
+                            $(".id_result").html("<span id='check'>사용가능한 아이디입니다</span>");
+                            $("#check").css({
+                                "color": "#0D6EFD",
+                                "font-weight": "bold",
+                                "font-size": "10px"
+                            });
+                            isIdAvailable = true; // 아이디 사용 가능
+                        }
+                        updateSubmitButtonState(); // 중복 여부 확인 이후에도 버튼 상태 갱신
+                    }
+                });
+            }
+            updateSubmitButtonState(); // 아이디 체크 후 버튼 상태 갱신
+        }
+
         function checkPass(){
-            let pass = document.querySelector("#passwd");
+          let pass = document.querySelector("#passwd");
             let pass_chk = document.querySelector("#userPasswdCheck");
             let pass_result = document.querySelector(".pass_result");
 
@@ -91,9 +96,8 @@
             pass_result.classList.add("true");
             return true;
     }
-      
-        //전화번호 체크하는 함수
-    function checkTel() {
+
+        function checkTel() {
         let tel = document.querySelector("#phone");
         let tel_result = document.querySelector(".tel_result");
         var regPhone = /^(010)([0-9]{4})([0-9]{4})/;
@@ -108,21 +112,20 @@
         tel_result.classList.add("true");
         return true;
 	}
-$(document).ready(function() {
-    
-    $("#userid").on("keyup", checkId);
-    $("#passwd").on("keyup", checkPass);
-    $("#userPasswdCheck").on("keyup", checkPass);
-    $("#phone").on("keyup", checkTel);
 
-    // 폼 제출 전 최종 데이터 체크
-    $("#frm").on("submit", function(e) {
-        if (!checkId() || !checkPass() || !checkTel()) {
-            e.preventDefault();
-        }
+        $("#userid").on("keyup", checkId);
+        $("#passwd").on("keyup", checkPass);
+        $("#userPasswdCheck").on("keyup", checkPass);
+        $("#phone").on("keyup", checkTel);
+
+        // 폼 제출 전 최종 데이터 체크
+     $("#frm").on("submit", function(e) {
+            if (!isIdAvailable || !checkPass() || !checkTel()) {
+                e.preventDefault(); // 어느 하나라도 조건이 충족되지 않으면 폼 제출 막음
+            }
+        });
     });
-});
-    </script>
+</script>
 </head>
 <body>
     <div class="joinTable"> 

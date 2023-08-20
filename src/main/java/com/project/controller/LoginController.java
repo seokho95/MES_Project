@@ -233,10 +233,6 @@ public class LoginController {
 		return "login_html/join_Complete";
 	}
 
-	@RequestMapping("/user")
-	public String user() {
-		return "login_html/user";
-	}
 
 	@RequestMapping("/manager_page")
 	public ModelAndView userList(ModelAndView view) {
@@ -256,7 +252,7 @@ public class LoginController {
 
 	@RequestMapping("/join_Complete")
 	public String Join_Complete() {
-		return "login_html/login";
+		return "redirect:/";
 	}
 
 	@RequestMapping("/idsearch")
