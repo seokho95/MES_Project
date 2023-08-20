@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>문의사항</title>
+</head>
+<style type="text/css">
+	section {
+		width: 1280px;
+		margin: 0 auto;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		border: none;
+	}
+
+	td,
+	th {
+		text-align: center;
+		padding: 10px 0px;
+	}
+
+	.current_page {
+		display: inline-block;
+		padding: 0px 10px;
+		font-size: 16px !important;
+		color: red;
+		font-weight: bold;
+	}
+
+	hr {
+		border: 2px solid #9555FF;
+	}
+
+	.tableLong {
+		width: 700px;
+	}
+
+	.btn_write_case {
+		text-align: right;
+	}
+
+	.btn_write {
+		border: none;
+		padding: 0px 10px;
+		width: 80px;
+		height: 30px;
+		text-decoration: none;
+		color: white;
+		background-color: #9555FF;
+	}
+
+	.announce {
+		background-color: #BF9BFA;
+	}
+
+	#bold {
+		font-weight: bold;
+	}
+
+	.postTitle {
+		text-decoration: none;
+		color: black;
+
+	}
+	.page a{
+		font-size: 1.2em;
+		text-decoration: none;
+	}
+	
+</style>
+
+<script>
+
+</script>
+
+<body>
+	<th:block th:if="${session.user == null}">
+		<script>
+			alert("로그인을 하셔야 이용할수 있습니다.");
+			location.href = "/";
+		</script>
+	</th:block>
+	<th:block th:insert="headfoot/header.html"></th:block>
+
+	<section>
+		<h1>문의사항</h1>
+		<hr>
+		<table>
+			<thead>
+				<tr>
+					<th>분류</th>
+					<th class="tableLong">제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th>조회수</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="b : ${list2}" class="announce" name="post">
+					<th:block th:if="${bStat.index } < 5">
+						<td>공지</td>
+
+						<td id="bold"><a th:href="@{/board/post/{pno}(pno=${b.getPostNum})}"
+								class="postTitle">[[${b.getPostTitle}]]</a></td>
+						<td>[[${b.getUserName}]]</td>
+						<td>[[${b.getPostDateShort}]]</td>
+						<td>[[${b.getReadCount}]]</td>
+					</th:block>
+				</tr>
+				<tr th:each="b : ${list}">
+					<td>문의</td>
+					<td><a th:href="@{/board/post/{pno}(pno=${b.getPostNum})}" class="postTitle">[[${
+							b.getPostTitle()}]]</a></td>
+					<td>[[${ b.getUserName()}]]</td>
+					<td>[[${ b.getPostDateShort()}]]</td>
+					<td>[[${ b.getReadCount()}]]</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<div class="page">
+							<a th:if="${page.previousPageGroup}"
+								th:href="@{board(pageNo=${pagging.startPageOfPageGroup - 1 })}">◀</a>
+
+							<th:block
+								th:each="i : ${#numbers.sequence(page.startPageOfPageGroup, page.endPageOfPageGroup)}">
+								<a th:href="@{board(pageNo=${i })}">[[${ i}]]</a>
+							</th:block>
+
+							<a th:if="${page.nextPageGroup}"
+								th:href="@{board(pageNo=${page.endPageOfPageGroup + 1 })}">▶</a>
+						</div>
+					</td>
+					<td>
+							<a th:href="@{/board/post/write}" class="btn_write">글쓰기</a>
+					</td>
+				</tr>
+			</tbody>
+			
+		</table>
+	</section>
+
+	<th:block th:insert="/headfoot/footer.html"></th:block>
+</body>
+
+</html>

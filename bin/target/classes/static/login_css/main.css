@@ -1,0 +1,66 @@
+.service{
+	background: #f2eaff;
+	margin: 0 auto;
+}
+
+.service .container1{
+	display: flex;
+	align-items: center;
+	
+}
+
+.service .img{
+	height: 300px;
+}
+
+.service .img img{
+	height: 300px;
+}
+
+.service .text{
+	color: #333;
+	text-align: center;
+	width: 1000px;
+}
+
+.service .text h1{
+	letter-spacing: 0.1em;
+}
+.service .text p{
+	font-family: "Noto Sans KR", Sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.3em;
+    padding: 0 50px;
+}
+
+.service .container2{
+	display: flex;
+	align-items: center;
+	
+}
+
+.service .img1{
+	height: 300px;
+}
+
+.service .img1 img{
+	height: 300px;
+}
+
+.service .text1{
+	color: #333;
+	text-align: center;
+	width: 1000px;
+}
+
+.service .text1 h1{
+	letter-spacing: 0.1em;
+}
+.service .text1 p{
+	font-family: "Noto Sans KR", Sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.3em;
+    padding: 0 50px;
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mapper.BoardMapper">
+
+
+	<select id="selectAllPost" parameterType="int"
+		resultType="board">
+		SELECT b.post_num, b.post_title, b.post_date,
+		b.post_content, u.user_name, b.read_count, b.post_type
+		FROM (
+		SELECT ceil(rownum/10) as pageNo, post_num, post_title, post_date,
+		post_content, user_num, read_count, post_type
+		FROM BOARD
+		WHERE post_type = 0
+		ORDER BY post_num DESC
+		) b, USER_ u
+		WHERE b.user_num = u.user_num AND b.pageNo = #{currPage}
+
+	</select>
+	<select id="selectAllAnnounce" resultType="board">
+		SELECT b.post_num,
+		b.post_title, b.post_date, b.post_content, u.user_name, b.read_count,
+		b.post_type
+		FROM BOARD b, USER_ u where b.user_num like u.user_num and
+		post_type = 1
+		ORDER BY POST_NUM DESC
+
+	</select>
+	<select id="selectPost" parameterType="int" resultType="board">
+		SELECT
+		b.post_num, b.post_title, b.post_date, b.post_content, u.user_name,
+		b.read_count, b.post_type
+		FROM BOARD b, USER_ u where b.user_num like
+		u.user_num and b.post_num =
+		#{pno}
+	</select>
+	<update id="addReadCount" parameterType="int">
+		UPDATE BOARD SET
+		read_count = read_count + 1 WHERE post_num = #{pno}
+	</update>
+
+	<select id="selectAllComment" parameterType="int"
+		resultType="comment">
+		SELECT c.post_num, c.comment_num, c.comment_content,
+		u.user_name FROM
+		board_comment c, user_ u where c.post_num = #{pno} and
+		c.user_num like
+		u.user_num
+	</select>
+	<insert id="insertBoardComment" parameterType="comment">
+		INSERT INTO
+		board_comment VALUES
+		(#{post_num},comment_num_seq.nextval,#{comment_content},#{user_num})
+	</insert>
+	<insert id="insertPost" parameterType="board">
+		INSERT INTO board VALUES
+		(board_num_seq.nextval,#{post_title},SYSDATE,#{post_content},#{user_num},0,#{post_type})
+	</insert>
+	<insert id="updatePost" parameterType="board">
+		UPDATE board SET post_title = #{post_title}, post_date = SYSDATE, 
+		post_content = #{post_content}  WHERE post_num = #{post_num}
+	</insert>
+	<select id="getCount" resultType="int">
+		SELECT count(*) from board
+		where post_type = 0
+	</select>
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM board WHERE post_num = #{pno}
+	</delete>
+
+</mapper>

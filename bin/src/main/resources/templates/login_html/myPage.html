@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 완료 버튼 클릭 시 이벤트
+            $(".btn_confirm2").click(function() {
+                // 차량번호 가져오기
+                var newCarNumber = $("#insert_confirm").val();
+
+                // 차량번호 업데이트 요청
+                $.ajax({
+                    type: "POST",
+                    url: "/updateCarNumber", // 업데이트할 경로로 수정
+                    data: { carNumber: newCarNumber },
+                    success: function(response) {
+                        alert("차량번호가 업데이트되었습니다.");
+                        location.reload(); // 페이지 리로드
+                    },
+                    error: function(error) {
+                        console.log("Error updating car number:", error);
+                    }
+                });
+            });
+        });
+        
+    </script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+</style>
+<style>
+    /* id는 # class는 . */
+    .box{
+	 	width: 520px;
+        height: 500px;
+        margin: 0px auto ;
+		padding-top: 70px;
+        border: 1px solid #9A9595;
+		border-radius: 5px;
+		
+	}
+    form{
+        width: 1280px; 
+        height: 920px;
+        flex-shrink: 0;
+        margin: 0 auto;
+
+        background-color: #F2EAFF;
+        }
+    .header{
+        text-align: center;
+        margin-top: 45px;
+        color: #9555FF;
+        font-family: 'Jua', sans-serif;
+        font-size: 40px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: 0.4px;
+        -webkit-text-stroke: 1px #555050; 
+    }
+    img{
+        margin-top: 13px;
+        margin-left: 19px;
+        width: 97px;
+        height: 82px;
+        flex-shrink: 0;    
+        }
+    .header{
+        display: flex;
+        flex-direction: row;
+    }
+    h2{
+        margin: 80px auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #000;
+        text-align: center;
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 0px; /* 83.333% */
+
+    }
+.btn_sharedPrking, .btn_TransactionPistory {
+    display: flex;
+    width: 178px;
+    height: 25px;
+    padding: 10px 67px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid #D3D3D3;
+    background: #bf9bfa;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color: #FFF;
+    text-align: center;
+    text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0.5px;
+    margin-left: 103px;
+    margin-top: -6px;
+    text-decoration: none;
+}
+.btn_sharedPrking{
+	font-size: 18px;
+}
+
+.btn_confirm2{
+display: flex;
+width: 312px;
+height: 48px;
+padding: 10px 15px;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+flex-shrink: 0;
+border-radius: 5px;
+border: 1px solid #D3D3D3;
+background: #bf9bfa;
+box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+color: #FFF;
+text-align: center;
+text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+font-size: 20px;
+font-style: normal;
+font-weight: 600;
+line-height: 28px; 
+letter-spacing: 0.5px;
+margin: 20px auto;
+    }
+
+    button:hover{
+        background-color: #9555FF;
+    }
+
+  #insert_name,#insert_confirm, #insert_email{
+        margin: 5px auto;
+        margin-left: 25px;
+        padding-left: 40px;
+    }
+
+    div > input{
+		padding-left: 20px;
+        width: 402px;
+        height: 44px;
+        flex-shrink: 0;
+        border-radius: 8px;
+        border: 1px solid #9A9595;
+        background: rgba(200, 100, 100, 0.00);
+        color: #9A9595;
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: 0.12px;
+    }
+    .input_confirm img{
+        padding: 0px 10px;
+        top: 5%;
+        left: 1%;
+        position: absolute;
+        width: 24px;
+        height: 24px;
+    }
+    .input_name img{
+        padding: 0px 10px;
+        top: 5%;
+        left: 1%;
+        position: absolute;
+        width: 24px;
+        height: 24px;
+    }
+    .input_email img{
+        padding: 0px 10px;
+        top: 5%;
+        left: 1%;
+        position: absolute;
+        width: 24px;
+        height: 24px;
+    }
+    .input_id, .confirm_phone, .confirm_email{
+        width: 500px;
+        margin: 18px auto;
+    }
+
+
+ 
+   .input_confirm, .input_name,.input_email{
+        position: relative;
+    }
+    .contents{
+		justify-content: center;
+		margin-top: 0px;
+		margin-bottom: 70px;
+	}
+	#pencil2{
+	margin-left: 455px;
+	margin-top: 25px;
+		
+	}
+	#pencil1{
+	margin-left: 455px;
+	margin-top: 25px;
+		
+	}
+input {
+  cursor: text;
+  caret-color: transparent;
+}
+</style>
+
+<body>
+     <form id="updateCarNumber" method="post">
+        <div class="header">
+            <img src="/img/Parking_logo.png">
+            <a class="header">공유주차</a>
+        </div>
+        <h2>마이페이지</h2>
+       <div class="box"> 
+        <div class="contents">
+            <div class="input_name">
+                <img src="/img/login_img/user.svg" alt="">
+               <input type="text" id="insert_name" placeholder="회원번호" th:value="${membershipNumber}" readonly>
+            </div>
+            <div class="input_email">
+                <img src="/img/login_img/email.png" alt="">
+                <input type="text" id="insert_email" placeholder="등록된 이메일 주소" th:value="${eMail}" readonly>
+                 <img id="pencil1" src="/img/login_img/pencil.png" type="button" 
+                 onclick="this.previousElementSibling.readOnly = false;">
+            </div>
+            <div class="input_confirm">
+                <img src="/img/login_img/globe.png" alt="">
+                <input type="text" id="insert_confirm" name="carNumber" placeholder="차량번호 입력" th:value="${carNumber}" readonly>
+                 <img id="pencil2" src="/img/login_img/pencil.png" type="button" 
+                 onclick="this.previousElementSibling.readOnly = false;">
+            </div>
+            </div>
+           <button type="button" class="btn_confirm2">완료</button>
+     </form>
+            <a class="btn_TransactionPistory" href="">이용내역</a> <br>
+            <a class="btn_sharedPrking" href="/map">공유주차장 등록하기</a>
+        	</div>
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-inter: Inter;
+  --font-jua: Jua;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-blueviolet: #9555ff;
+}

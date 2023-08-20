@@ -1,0 +1,101 @@
+.icon,
+.icon1 {
+  position: absolute;
+}
+.icon {
+  top: calc(50% - 246px);
+  left: calc(50% - 351px);
+  border-radius: 20px;
+  width: 712px;
+  height: 276px;
+}
+.icon1 {
+  object-fit: cover;
+}
+.div1,
+.icon1 {
+  top: 0;
+  left: 0;
+  width: 78.77px;
+  height: 60.58px;
+}
+.div1,
+.div2,
+.parent {
+  position: absolute;
+}
+.div2 {
+  top: 19px;
+  left: 79px;
+  letter-spacing: 0.01em;
+  display: inline-block;
+  width: 141.97px;
+  height: 63.41px;
+  -webkit-text-stroke: 1px #e8e4e4;
+}
+.parent {
+  top: 45px;
+  left: 110px;
+  width: 220.97px;
+  height: 82.41px;
+  text-align: left;
+  font-family: var(--font-jua);
+}
+.p {
+  margin: 0;
+}
+.txt {
+  line-break: anywhere;
+  width: 100%;
+}
+.div3 {
+  position: absolute;
+  top: 276px;
+  left: calc(50% - 209px);
+  font-size: 30px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  width: 419px;
+  height: 173px;
+}
+.div4,
+.rectangle {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+.rectangle {
+  right: 0;
+  bottom: 0;
+  border-radius: 13px;
+  background-color: var(--color-blueviolet);
+}
+.div4 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.primary-button {
+  position: absolute;
+  top: 414px;
+  left: calc(50% - 104px);
+  width: 200px;
+  height: 60px;
+  cursor: pointer;
+  font-size: 25px;
+  color: #fff;
+}
+.div {
+  position: relative;
+  background-color: var(--color-white);
+  width: 100%;
+  height: 1024px;
+  overflow-y: auto;
+  text-align: center;
+  font-size: 40px;
+  color: var(--color-blueviolet);
+  font-family: 'Noto Sans KR', sans-serif;
+}

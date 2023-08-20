@@ -1,0 +1,38 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gamja+Flower&family=Jua&display=swap');
+
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-jua: Jua;
+  --font-inter: ;
+
+  /* font sizes */
+  --font-size-sm: 14px;
+  --font-size-xs: 12px;
+  --font-size-xl: 20px;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-black: #000;
+  --color-darkgray-100: #a3a3a4;
+  --color-darkgray-200: #9a9595;
+  --color-dimgray: #6b6767;
+  --color-lavender: #f2eaff;
+  --color-indianred: rgba(200, 100, 100, 0);
+  --color-mediumpurple: #bf9bfa;
+  --color-lightgray: #d3d3d3;
+
+  /* Paddings */
+  --padding-3xs: 10px;
+  --padding-mini: 15px;
+
+  /* border radiuses */
+  --br-8xs: 5px;
+  --br-5xs: 8px;
+}

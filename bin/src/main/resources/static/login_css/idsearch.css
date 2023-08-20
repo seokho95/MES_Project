@@ -1,0 +1,340 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gamja+Flower&family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+*{
+	font-family: 'Noto Sans KR', sans-serif;	
+}
+.div1 {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 640px);
+  background-color: var(--color-lavender);
+  width: 1280px;
+  height: 1024px;
+}
+.name {
+  position: relative;
+  line-height: 28px;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+.child,
+.ob-forms {
+  box-sizing: border-box;
+}
+.ob-forms {
+  position: absolute;
+  top: 950px;
+  left: calc(38%);
+  border-radius: var(--br-8xs);
+  background-color: var(--color-mediumpurple);
+  border: 1px solid var(--color-lightgray);
+  width: 168px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding-3xs) var(--padding-mini);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--font-size-xl);
+  color: var(--color-white);
+  cursor: pointer;
+}
+.ob-forms5 {
+  position: absolute;
+  top: 950px;
+  left: calc(53%);
+  border-radius: var(--br-8xs);
+  background-color: var(--color-mediumpurple);
+  border: 1px solid var(--color-lightgray);
+  width: 168px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding-3xs) var(--padding-mini);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--font-size-xl);
+  color: var(--color-white);
+  cursor: pointer;
+}
+.div2,
+.div3 {
+  position: absolute;
+}
+.div3 {
+  top: 17px;
+  left: 45px;
+  letter-spacing: 0.01em;
+}
+
+.icon-circle-check {
+  position: absolute;
+  height: 54.55%;
+  width: 5.97%;
+  top: 21.74%;
+  right: 90.55%;
+  bottom: 23.72%;
+  left: 3.48%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+    div > input{
+        padding-left: 45px;
+        width: 353px;
+        height: 38px;
+        flex-shrink: 0;
+        border-radius: 8px;
+        border: 1px solid #9A9595;
+        background: rgba(200, 100, 100, 0.00);
+        color: #9A9595;
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: 0.12px;
+    }
+.parent {
+  position: absolute;
+  top: 759px;
+  left: calc(50% - 202.5px);
+  width: 402px;
+  height: 44px;
+}
+.icon-envelope-closed {
+  position: absolute;
+  height: 42.05%;
+  width: 6.14%;
+  top: 29.55%;
+  right: 90.38%;
+  bottom: 28.41%;
+  left: 3.48%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.group,
+.icon {
+  position: absolute;
+  top: 705px;
+  left: calc(50% - 202.5px);
+  width: 402px;
+  height: 44px;
+}
+.icon {
+  height: 54.71%;
+  width: 5.99%;
+  top: 22.73%;
+  right: 90.53%;
+  bottom: 22.56%;
+  left: 3.48%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.container {
+  position: absolute;
+  top: 651px;
+  left: calc(50% - 202.5px);
+  width: 402px;
+  height: 44px;
+}
+.group-child {
+  top: 0;
+  left: calc(50% - 204.5px);
+  background-color: var(--color-lavender);
+  width: 407px;
+}
+.div8,
+.group-child,
+.rectangle-parent {
+  position: absolute;
+  height: 26px;
+}
+.div8 {
+  top: 0;
+  left: calc(50% - 202.5px);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  width: 407px;
+}
+.rectangle-parent {
+  top: 610px;
+  left: calc(50% - 201px);
+  width: 409px;
+}
+.div9 {
+  position: absolute;
+  height: 100%;
+  width: 88.67%;
+  top: 0;
+  left: 11%;
+  line-height: 28px;
+  display: inline-block;
+}
+.rectangle {
+  position: absolute;
+  height: 53.57%;
+  width: 5%;
+  top: 21.43%;
+  right: 93.67%;
+  bottom: 25%;
+  left: 1.33%;
+  border-radius: var(--br-8xs);
+  border: 1px solid var(--color-darkgray-100);
+  box-sizing: border-box;
+}
+.ob-forms1 {
+  position: absolute;
+  top: 572px;
+  left: calc(50% - 234px);
+  width: 300px;
+  height: 28px;
+  font-size: var(--font-size-sm);
+  color: var(--color-black);
+  font-family: var(--font-inter);
+}
+.div12 {
+  position: absolute;
+  top: 15px;
+  left: 45px;
+  letter-spacing: 0.01em;
+}
+.icon-circle-check1 {
+  position: absolute;
+  height: 54.55%;
+  width: 5.97%;
+  top: 22.73%;
+  right: 90.55%;
+  bottom: 22.73%;
+  left: 3.48%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.group-div {
+  top: 431px;
+  left: calc(50% - 202.5px);
+  width: 402px;
+  height: 44px;
+}
+.div13,
+.group-div,
+.icon1 {
+  position: absolute;
+}
+.div13 {
+  top: 15.4px;
+  left: 41.81px;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  width: 183.31px;
+  height: 17.6px;
+}
+.icon1 {
+  height: 61.31%;
+  width: 4.2%;
+  top: 20.45%;
+  right: 91.82%;
+  bottom: 18.24%;
+  left: 3.98%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.parent1,
+.parent2 {
+  position: absolute;
+  top: 377px;
+  left: calc(50% - 202.5px);;
+  width: 402px;
+  height: 44px;
+}
+.parent2 {
+  top: 323px;
+}
+.rectangle-group {
+  position: absolute;
+  top: 282px;
+  left: calc(50% - 203px);
+  width: 409px;
+  height: 26px;
+}
+.ob-forms3 {
+  top: 243px;
+  left: calc(50% - 234px);
+  width: 300px;
+  height: 28px;
+  font-size: var(--font-size-sm);
+  color: var(--color-black);
+  font-family: var(--font-inter);
+}
+.div18,
+.icon3,
+.ob-forms3 {
+  position: absolute;
+}
+.div18 {
+  top: 95px;
+  left: calc(50% - 260px);
+  font-size: 24px;
+  line-height: 20px;
+  color: var(--color-black);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 519px;
+  height: 137px;
+  font-family: 'Noto Sans KR', sans-serif;;
+}
+.icon3 {
+  object-fit: cover;
+}
+.div19,
+.icon3 {
+  top: 0;
+  left: 0;
+  width: 78.77px;
+  height: 60.58px;
+}
+.div19,
+.parent3 {
+  position: absolute;
+}
+.div20 {
+   text-align: center;
+   margin-left: 70px;
+    margin-top: 20px;
+    color: #9555FF;
+    font-family: 'Jua', sans-serif;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.4px;
+    -webkit-text-stroke: 1px #555050; 
+}
+.parent3 {
+  top: 45px;
+  left: calc(50% - 600px);
+  width: 220.97px;
+  height: 82.41px;
+  font-size: 40px;
+  color: #9555ff;
+}
+.div {
+  position: relative;
+  background-color: var(--color-white);
+  width: 100%;
+  height: 1024px;
+  overflow-y: auto;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  color: var(--color-dimgray);
+  font-family: var(--font-jua);
+}

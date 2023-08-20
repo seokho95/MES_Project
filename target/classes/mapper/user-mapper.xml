@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mapper.UserMapper">
+	<resultMap type="user" id="user">
+		<id column="user_id" property="userId" />
+		<result column="user_pw" property="passwd" />
+		<result column="user_name" property="name" />
+		<result column="user_contact" property="phoneNumber" />
+		<result column="user_mail" property="eMail" />
+		<result column="user_gender" property="gender" />
+		<result column="user_num" property="membershipNumber" />
+		<result column="car_num" property="carNumber" />
+	</resultMap>
+
+	<!-- //로그인 -->
+	<select id="login" parameterType="Map" resultMap="user">
+		select * from
+		USER_ where user_id like #{userId} and user_pw like #{passwd}
+	</select>
+
+	<!-- //회원가입 -->
+	<insert id="insertUser" parameterType="user">
+		insert into USER_
+		values(#{userId}, #{name}, #{passwd}, #{phoneNumber},
+		#{gender},
+		#{eMail}, 1, #{membershipNumber},'register')
+	</insert>
+
+	<!-- //회원가입 ID 중복검사 -->
+	<select id="UserCheckId" parameterType="user" resultType="int">
+		select
+		count(*) from USER_ where user_id = #{userId}
+	</select>
+
+	<!-- //관리자페이지 - USER 전체 조회 -->
+	<select id="viewAlluser" resultMap="user">
+		select * from USER_
+	</select>
+
+	<!-- //관리자페이지 - 해당 USER 조회 -->
+	<select id="searchUser" parameterType="map" resultMap="user">
+		select
+		user_id, user_pw, user_name, user_contact, user_mail from USER_
+		where
+		${kind} like '%' || #{search} || '%'
+	</select>
+
+	<!-- //아이디 조회로 신원확인 후 비밀번호 찾기 -->
+	<select id="getUser" parameterType="user">
+		select * from USER_ where
+		user_id = #{userId}
+	</select>
+
+	<!-- //비밀번호 변경 -->
+	<update id="updatePasswd" parameterType="user">
+		update USER_ set user_pw
+		= #{passwd} where user_id = #{userId}
+	</update>
+	
+	<!--// mypage 회원번호 불러오기 -->
+	<select id="getMembershipNumber" parameterType="String" resultType="String">
+        SELECT user_num, user_mail, car_num
+        FROM USER_
+        WHERE user_id = #{userId}
+    </select>
+    
+    <!-- //차량 번호 업데이트 -->
+	<update id="updateCarNumber" parameterType="user">
+    	UPDATE USER_ 
+   		SET car_num = #{carNumber} 
+    	WHERE user_id = #{userId}
+	</update>
+
+</mapper>

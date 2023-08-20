@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(function () {
+		$('#btn_search').click(function () {
+			console.log("asdf");
+			let data = `kind=${$("#sel_kind").val()}&search=${$("#txt_search").val()}`;
+			$.ajax({
+				url: '/user/search',
+				data: data,
+				type: 'post',
+				dataType: 'json',
+				success: function (r) {
+					console.log(r);
+					var tag = "";
+					
+					if (r.length === 0) {
+						tag = "<tr><td colspan=5'>일치하는 사용자 정보가 없습니다.<td></tr>";
+						$('.list').html(tag);	
+					}else {
+						
+						for (let i = 0; i < r.length; i++) {
+							tag += `<tr>`;
+							tag += `<td>${ r[i].userId}</td>`;
+							tag += `<td>${ r[i].passwd}</td>`;
+							tag += `<td>${ r[i].name}</td>`;
+							tag += `<td>${ r[i].phoneNumber}</td>`;
+							tag += `<td>${ r[i].eMail}</td>`;
+							tag += `</tr>`;
+						}
+					$('.list').html(tag);
+					}
+				}
+			});
+		});
+	});
+</script>
+<style>
+	.All {
+		flex-shrink: 0;
+		padding: 0px;
+		margin: 50px auto;
+	}
+	.header, .footer{
+		margin: 0px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1480px;
+        height: 100%;
+	}
+
+	.menu_list .sub_menu {
+		background-color: #BF9BFA;
+		width: 253px;
+		height: 82px;
+		border-color: #ffffff;
+	}
+
+	.menu_list {
+		width: 1280px;
+		height: 866px;
+		margin: 0 auto;
+		padding: 0;
+
+	}
+
+	#txt_search {
+		margin-left: 20px;
+		display: flex;
+		width: 433.405px;
+		padding: 10px 15px;
+		color: #6B6767;
+		flex-direction: column;
+		align-items: flex-start;
+		flex-shrink: 0;
+		border-radius: 5px;
+		border: 1px solid #E2E1E5;
+		background: #FFF;
+	}
+
+	#btn_search {
+		display: flex;
+		width: 84.757px;
+		height: 43.122px;
+		padding: 10px 15px;
+		top: 50px;
+		margin-left: 24px;
+		align-items: center;
+		border-radius: 5px;
+		border: 1px solid #D3D3D3;
+		background: #BF9BFA;
+
+		color: #FFF;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-family: 'Noto Sans KR', sans-serif;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 28px;
+		font-size: 25px;
+		font-weight: 700;
+
+	}
+
+	#btn_search:hover {
+		background-color: #9555FF;
+	}
+
+	.search {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		margin-bottom: 20px;
+	}
+
+	#search_result {
+		height: 866px;
+		padding: 178px 0px;
+		background-color: #F2EAFF;
+		vertical-align: top;
+	}
+	.user {
+		margin: 0px auto;
+		width: 684px;
+		border-collapse: collapse;
+		border: 1px solid #9A9595;
+		background-color: #ffffff;
+		color: #535151;
+		
+	}
+	#first,
+	#second {
+		border: 1px solid #9A9595;
+		height: 50px;
+		text-align: center;
+	}
+
+	.menu_list th, td {
+		border: 1px solid #9A9595;
+		border-collapse: collapse;
+		height: 50px;
+		text-align: center;
+		table-layout: calc();
+	}
+	ul {
+		text-align: center;
+		padding: 0px;
+		margin: 0 auto;
+	}
+
+	.sub_menu li {
+		margin: 10px 0px;
+		list-style-type: none;
+		width: 253px;
+		height: 100px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.menu_list li:hover {
+		background-color: #9555FF;
+	}
+
+
+	.selectable {
+		color: gray;
+	}
+
+	.content {
+		display: none;
+	}
+
+	.active {
+		display: block;
+	}
+
+	.manager_page {
+		text-align: center;
+		margin: 10px 15px;
+		font-size: 45px;
+		color: #535151;
+		font-family: 'Noto Sans KR', sans-serif;
+		font-weight: 800;
+	}
+
+	.sub_menu a {
+		box-sizing: border-box;
+		display: inline;
+		text-decoration: none;
+		color: #ffffff;
+		font-family: 'Noto Sans KR', sans-serif;
+		font-size: 25px;
+		font-style: normal;
+		font-weight: 700;
+		text-align: center;
+	}
+
+	select {
+		width: 90px;
+		padding: 10px 0px;
+		height: 43.122px;
+		flex-shrink: 0;
+		border-radius: 5px;
+		border: 1px solid #E2E1E5;
+		background: #FFF;
+		color: #535151;
+		font-family: 'Noto Sans KR', sans-serif;
+		text-align: center;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	//버튼 클릭한 것만 select클래스 적용
+	$(function () {
+		$('li').click(function (e) {
+			$(this).addClass('select').siblings().removeClass('select');
+			$('#search_result > div').eq($(this).index()).addClass('active').siblings().removeClass('active');
+		});
+	});
+</script>
+
+<body>
+		<div class="header">
+            <!-- header -->
+            <th:block th:include="/headfoot/header.html"></th:block>
+        </div>
+	<div class="All">
+		<table class="menu_list">
+			<tr>
+				<td class="sub_menu">
+					<p class="manager_page">관리 목록</p>
+					<ul>
+						<li><a href="#" class="select">사용자 관리</a></li>
+						<li><a href="#">판매자 관리</a></li>
+						<li><a href="#">블랙리스트</a></li>
+						<li><a href="#">휴면계정</a></li>
+						<li><a href="#">서류관리</a></li>
+						<li><a href="#">사진관리</a></li>
+						<li><a href="#">도메인관리</a></li>
+						<li><a href="#">입금대기목록</a></li>
+						<li><a href="#">회원삭제</a></li>
+					</ul>
+				</td>
+				<td rowspan="10" id="search_result">
+					<div class="content active" id="div1">
+						<div class="search">
+							<select id="sel_kind">
+								<option value="user_id">아이디</option>
+								<option value="user_name">이름</option>
+								<option value="user_contact">전화번호</option>
+								<option value="user_mail">이메일</option>
+							</select>
+							<input type="text" id="txt_search" placeholder="사용자 아이디 조회">
+							<button id="btn_search">조회</button>
+						</div>
+						<div>
+							<table class="user">
+								<thead>
+									<tr id="first">
+										<th style="width: 120px;">아이디</th>
+										<th style="width: 117px;">비밀번호</th>
+										<th style="width: 70px;">이름</th>
+										<th style="width: 156px;">전화번호</th>
+										<th style="width: 220px;">이메일</th>
+									</tr>
+								</thead>
+								<tbody class="list">
+									<tr id="second" th:each="user : ${list}">
+										<td>[[${user.userId}]]</td>
+										<td>[[${user.passwd}]]</td>
+										<td>[[${user.name}]]</td>
+										<td>[[${user.phoneNumber}]]</td>
+										<td>[[${user.eMail}]]</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="content" id="div2">
+						<p>판매자 관리</p>
+					</div>
+					<div class="content" id="div3">
+						<p>블랙리스트</p>
+					</div>
+					<div class="content" id="div4">
+						<p>휴면계정</p>
+					</div>
+					<div class="content" id="div5">
+						<p>서류관리</p>
+					</div>
+					<div class="content" id="div6">
+						<p>사진관리</p>
+					</div>
+					<div class="content" id="div7">
+						<p>도메인관리</p>
+					</div>
+					<div class="content" id="div8">
+						<p>입금대기목록</p>
+					</div>
+					<div class="content" id="div9">
+						<p>회원삭제</p>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="footer">
+            <!-- footer -->
+		<th:block th:include="/headfoot/footer.html"></th:block>
+    </div>
+</body>
+</html>

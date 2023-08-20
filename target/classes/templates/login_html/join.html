@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="./login_css/join.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        let isIdAvailable = false; // 아이디 사용 가능 여부를 저장하는 변수
+
+        function updateSubmitButtonState() {
+            let submitButton = $("button.send")[0]; // 완료 버튼 엘리먼트
+
+            if (isIdAvailable && checkPass() && checkTel()) { 
+                submitButton.disabled = false; // 모든 조건이 충족되면 버튼 활성화
+            } else {
+                submitButton.disabled = true; // 조건이 충족되지 않으면 버튼 비활성화
+            }
+        }
+
+        function checkId() {
+            let id = $("#userid")[0];
+            let id_result = $(".id_result")[0];
+            let regExp = /^[a-z0-9]{8,12}$/; // 영소문자와 숫자만 허용하는 정규식
+
+            if (id.value.length < 8 || id.value.length > 12) {
+                id_result.innerHTML = "글자수는 8~12글자 사이로 입력해주세요.";
+                id_result.classList.remove("true");
+                id_result.classList.add("false");
+                isIdAvailable = false;
+            } else if (!regExp.test(id.value)) {
+                id_result.innerHTML = "영소문자와 숫자만 입력할 수 있습니다.";
+                id_result.classList.remove("true");
+                id_result.classList.add("false");
+                isIdAvailable = false;
+            } else {
+                var $mid = $("#userid");
+                $.ajax({
+                    type: "POST",
+                    url: "/join/checkid",
+                    data: {
+                        "type": "user",
+                        "id": $mid.val()
+                    },
+                    success: function(data) {
+                        if (data != "0") { // 1이면 중복
+                            $(".id_result").html("<span id='check'>이미 존재하는 아이디입니다</span>");
+                            $("#check").css({
+                                "color": "#FA3E3E",
+                                "font-weight": "bold",
+                                "font-size": "10px"
+                            });
+                            isIdAvailable = false;
+                        } else { // 아니면 중복아님
+                            $(".id_result").html("<span id='check'>사용가능한 아이디입니다</span>");
+                            $("#check").css({
+                                "color": "#0D6EFD",
+                                "font-weight": "bold",
+                                "font-size": "10px"
+                            });
+                            isIdAvailable = true; // 아이디 사용 가능
+                        }
+                        updateSubmitButtonState(); // 중복 여부 확인 이후에도 버튼 상태 갱신
+                    }
+                });
+            }
+            updateSubmitButtonState(); // 아이디 체크 후 버튼 상태 갱신
+        }
+
+        function checkPass(){
+          let pass = document.querySelector("#passwd");
+            let pass_chk = document.querySelector("#userPasswdCheck");
+            let pass_result = document.querySelector(".pass_result");
+
+            //정규식으로 암호 형식 체크
+            let reg = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&]{8,20}$/;
+            if(!reg.test(pass.value)){
+                pass_result.innerHTML = "암호는 8~12글자 사이의 영문 대소문자, 숫자, 특수문자를 모두 포함해야 합니다.";
+                pass_result.classList.remove("true");
+                pass_result.classList.add("false");
+                return false;
+            }
+            
+            //두번 입력한 암호가 서로 일치하는지?
+            if(pass.value != pass_chk.value){
+                pass_result.innerHTML = "입력한 암호가 서로 일치하지 않습니다.";
+                pass_result.classList.remove("true");
+                pass_result.classList.add("false");
+                return false;
+            }
+            pass_result.innerHTML = "암호가 일치합니다.";
+            pass_result.classList.remove("false");
+            pass_result.classList.add("true");
+            return true;
+    }
+
+        function checkTel() {
+        let tel = document.querySelector("#phone");
+        let tel_result = document.querySelector(".tel_result");
+        var regPhone = /^(010)([0-9]{4})([0-9]{4})/;
+        if (!regPhone.test(tel.value)) {
+         tel_result.innerHTML = "올바른 휴대폰 번호의 형식이 아닙니다.";
+         tel_result.classList.remove("true");
+         tel_result.classList.add("false");
+        return false;
+        }
+        tel_result.innerHTML = "";
+        tel_result.classList.remove("false");
+        tel_result.classList.add("true");
+        return true;
+	}
+
+        $("#userid").on("keyup", checkId);
+        $("#passwd").on("keyup", checkPass);
+        $("#userPasswdCheck").on("keyup", checkPass);
+        $("#phone").on("keyup", checkTel);
+
+        // 폼 제출 전 최종 데이터 체크
+     $("#frm").on("submit", function(e) {
+            if (!isIdAvailable || !checkPass() || !checkTel()) {
+                e.preventDefault(); // 어느 하나라도 조건이 충족되지 않으면 폼 제출 막음
+            }
+        });
+    });
+</script>
+</head>
+<body>
+    <div class="joinTable"> 
+    <div class="logo">
+        <img src="/img/Parking_logo.png" alt="">
+        <h1>공유주차</h1>
+    </div>
+    <div class="userInput">
+        <form id="frm" action="/user/join/action" method="post">
+            <fieldset>
+                <legend>회원가입</legend>
+                <div class="uid">
+                    <label for="userid">아이디</label>
+                    <input type="text" id="userid" name="userId" maxlength="12" minlength="8" class="check" placeholder="아이디 입력" required>
+                    <li class="id_result"></li>
+                </div>
+                <div class="form-group">
+                        <label for="Passwd">패스워드</label>
+                        <input type="password" id="passwd" name="passwd" maxlength="12" minlength="8" class="check" placeholder="패스워드 입력" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userPasswdCheck">패스워드 확인</label>
+                        <input type="password" id="userPasswdCheck"  maxlength="12" minlength="8" class="check" placeholder="패스워드 확인" required>
+                        <li class="pass_result"></li>
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">이름</label>
+                        <input type="text" id="userName" name="name" maxlength="4" class="check" placeholder="이름 입력" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telecom">통신사</label>
+                        <div class="telecomSelect">
+                            <img src="/img/login_img/phone.png" alt="폰">  
+                            <select id="telecom" aria-label="telecomSelect" size="1" required>
+                                <option value="" readonly>통신사 선택</option>
+                                <option value="SKT">SKT</option>
+                                <option value="KT">KT</option>
+                                <option value="LGU+">LGU+</option>
+                                <option value="LGU+ 알뜰폰">LGU+ 알뜰폰</option>
+                                <option value="KT 알뜰폰">KT 알뜰폰</option>
+                                <option value="SKT 알뜰폰">SKT 알뜰폰</option>
+                            </select>
+                        </div>
+                            <div class="phoneNo">
+                             <img src="/img/login_img/phone.png" alt="폰">
+                             <input type="tel" id="phone" name="phoneNumber" class="check" maxlength="11" minlength="11" placeholder="핸드폰 번호 입력 '-'제외" required>    
+                             <li class="tel_result"></li>
+                            </div>
+                    <div class="form-group">
+                        <label for="gender">성별</label>
+                        <div class="genderSelect">
+                            <img src="/img/login_img/people.png" alt="성별">  
+                            <select id="gender" name="gender" aria-label="genderSelect" size="1" required>
+                                <option value="" readonly>성별 선택</option>
+                                <option value="M">남자</option>
+                                <option value="F">여자</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">이메일 주소</label>
+                        <input type="email" id="userEmail" name="eMail" maxlength="20" class="check" placeholder="이메일주소 입력" required>
+                    </div>
+                    </div>
+                    <button class="send">완료</button>
+                </fieldset>
+            </div>
+        </form>        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>     

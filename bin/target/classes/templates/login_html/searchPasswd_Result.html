@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script>
+	//현재 비밀번호가 DB에 존재유무 확인 후 팝업창 띄우기
+   	function update_passwd(){
+		let data = `nowPass=${$("#insert_now_passwd").val()}&newPass=${$("#insert_new_passwd").val()}`;
+            $.ajax({
+               url:'/update/passwd',
+               data: data,
+               type: 'post',
+               dataType: 'json',
+               success:function(r){
+				   console.log('asdf');
+				   if(r == 1){
+					   console.log(r);
+					   $('#myModal').css('display', 'block');
+					   return true;
+				   }else{
+					   alert("비밀번호 변경에 실패했습니다.");
+					   location.reload();
+				   }
+               }
+            });
+        }
+        $(function(){
+			$('.btn_change').click(update_passwd);
+		});
+</script>
+<style>
+	#log {
+		margin: 214px auto;
+		width: 798px;
+		height: 494px;
+		background: #F2EAFF;
+	}
+
+	#header {
+		text-align: center;
+		margin-top: 45px;
+		color: #9555FF;
+		font-family: 'Jua', sans-serif;
+		font-size: 40px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		letter-spacing: 0.4px;
+		-webkit-text-stroke: 1px #555050;
+	}
+
+	img {
+		margin-top: 13px;
+		margin-left: 19px;
+		width: 97px;
+		height: 82px;
+		flex-shrink: 0;
+	}
+
+	.header {
+		display: flex;
+		flex-direction: row;
+	}
+
+	h2 {
+		margin: 20px auto;
+		text-align: center;
+	}
+
+	.btn_change {
+		margin: 30px auto;
+		display: flex;
+		width: 312px;
+		height: 44px;
+		justify-content: center;
+		align-items: center;
+		flex-shrink: 0;
+
+		border-radius: 8px;
+		border: 1px solid #D3D3D3;
+		opacity: 0.8500000238418579;
+		background: #BF9BFA;
+		box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+		color: #FFF;
+		text-align: center;
+		text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+		font-family: 'Noto Sans KR', sans-serif;
+		font-size: 20px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: 60px;
+		-webkit-text-stroke: 0px;
+		text-decoration: none;
+	}
+
+	.btn_change:hover {
+		background-color: #9555FF;
+	}
+	
+	#insert_now_passwd,
+	#insert_new_passwd,
+	#check_passwd {
+		margin: 4px auto;
+		padding-left: 40px;
+	}
+
+	.input_passwd {
+		display: flex;
+		align-items: center;
+		width: 388px;
+		margin: 0px auto;
+	}
+
+	div>input {
+		width: 344px;
+		height: 44px;
+		flex-shrink: 0;
+		border-radius: 8px;
+		border: 1px solid #9A9595;
+		background: rgba(200, 100, 100, 0.00);
+		color: #9A9595;
+		font-family: 'Noto Sans KR', sans-serif;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		letter-spacing: 0.12px;
+	}
+
+	.input_passwd img {
+		margin: auto;
+		padding: 0px 10px;
+		position: absolute;
+		width: 19px;
+		height: 25px;
+	}
+
+	li {
+		list-style-type: none;
+		font-family: 'Noto Sans KR', sans-serif;
+		font-size: 13px;
+		margin: 0px 210px;
+
+	}
+
+	.true {
+		color: blue;
+	}
+
+	.false {
+		color: red;
+	}
+</style>
+<script>
+	//비밀번호 입력시 적용되는 문구
+	function checkPass(e) {
+		let nowpass = document.querySelector("#insert_now_passwd");
+		let passwd = document.querySelector("#insert_new_passwd");
+		let checkPass = document.querySelector("#check_passwd");
+		let passwd_result1 = document.querySelector(".passwd_result1");
+		let passwd_result2 = document.querySelector(".passwd_result2");
+		let passwd_result3 = document.querySelector(".passwd_result3");
+		
+		
+		let reg = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&]{8,32}$/;
+		if(nowpass.value.length < 1){
+			passwd_result1.innerHTML = "현재 비밀번호를 입력하세요.";
+			passwd_result1.classList.remove("true");
+			passwd_result1.classList.add("false");
+			return false;
+		}else{
+			passwd_result1.innerHTML = "";
+		}
+		
+		if (!reg.test(passwd.value)) {
+			passwd_result2.innerHTML = "암호는 8~32글자 사이의 영문 대소문자, 숫자, 특수문자를<br> 모두 포함해야 합니다.";
+			passwd_result2.classList.remove("true");
+			passwd_result2.classList.add("false");
+			return false;
+		}else{		
+			passwd_result1.innerHTML = "";
+		}
+		
+
+		if (passwd.value != checkPass.value) {
+			passwd_result3.innerHTML = "비밀번호가 일치하지 않습니다.";
+			passwd_result3.classList.remove("true");
+			passwd_result3.classList.add("false");
+			return false;
+		}else{
+			passwd_result3.innerHTML = "비밀번호가 일치합니다.";
+			passwd_result3.classList.remove("false");
+			passwd_result3.classList.add("true");
+			return true;						
+		}
+		
+
+	}
+	//비밀번호 다 입력하지 못하면 작동금지
+	window.onload = () => {
+		document.querySelector("#check_passwd").onkeyup = checkPass;
+
+		document.querySelector("#log").onsubmit = (e) => {
+			if (!checkPass()) {
+				e.preventDefault();
+			}
+		}
+
+	}
+</script>
+<body>
+	<form method="post" id="log">
+		<div class="header">
+			<img src="/img/login_img/ppangppang.png">
+			<a id="header">공유주차</a>
+		</div>
+		<h2>비밀번호 변경</h2>
+		<div class="passwd">
+			<div class="input_passwd">
+				<img src="/img/login_img/password.png" alt="">
+				<input type="text" id="insert_now_passwd" placeholder="현재 비밀번호 입력">
+			</div>
+			<li class="passwd_result1"></li>
+			<div class="input_passwd">
+				<img src="/img/login_img/password.png" alt="">
+				<input type="text" id="insert_new_passwd" placeholder="새로운 비밀번호 입력">
+			</div>
+			<li class="passwd_result2"></li>
+			<div class="input_passwd">
+				<img src="/img/login_img/password.png" alt="">
+				<input type="password" id="check_passwd" placeholder="비밀번호 확인">
+			</div>
+			<li class="passwd_result3"></li>
+		</div>
+		<button type="button" class='btn_change'>완료</button>
+		</div>
+	</form>
+
+	<!-- 팝업 영역 -->
+	<style>
+		#myModal {
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 400px;
+			height: 200px;
+			position: absolute;
+			background-color: #ffffff;
+			border: 5px solid #BF9BFA;
+			padding: 20px;
+			box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);		}
+
+		#tap {
+			margin: 30px;
+			font-family: 'Noto Sans KR', sans-serif;
+			font-size: 20px;
+			text-align: center;
+		}
+
+		#btnYes, #btnNo {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			list-style-type: none;
+			margin: 0px 5px;
+			flex-shrink: 0;
+			border-radius: 5px;
+			width: 100px;
+			height: 60px;
+			background-color: #9555FF;
+		}
+		#btnOk{
+			color: #ffffff;
+			text-decoration: none;
+			font-size: 15px;
+			-webkit-text-stroke: 0px;
+			display: flex;
+			text-align: center;
+			justify-content: center;
+			align-items: center;
+		}
+		#btnYesNo .link{
+			color: #ffffff;
+			text-decoration: none;
+			font-size: 15px;
+			-webkit-text-stroke: 0px;
+			display: flex;
+			text-align: center;
+			justify-content: center;
+			align-items: center;
+		}
+		#btnYesNo {
+			display: flex;
+			flex: row;
+			margin-left: 23%;
+		}
+	</style>
+	<form id="myModal" style="display: none;">
+		<p id="tap">비밀번호 변경이 완료되었습니다. <br>로그인페이지로 이동하시겠습니까?</p>
+		<div id="btnYesNo">
+			<li id="btnYes"><a href="/" class="link">예</a></li>
+			<li id="btnNo"><a href="/map" class="link">메인페이지로<br>이동</a></li>
+		</div>
+	</form>
+</body>
+</html>

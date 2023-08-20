@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<div id="container">
+
+	<head>
+		<title>parking_map</title>
+		<link rel="stylesheet" href="add_parking/map/map1.css">
+		<script type="text/javascript"
+			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e83e62af35f66760b7dff824464e2e4&libraries=services"></script>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+	</head>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+
+
+	<!--<script th:inline='javascript'>-->
+	<script>
+		var geocoder;
+		var map;
+		var marker;
+		var mapContainer;
+		$(function () {
+			//폼이 제출되면 페이지가 넘어가는데 이를 막아주기 위함
+			//preventDefault을 적음으로 이벤트 동작을 막고 폼안에 함수들이 실행된다.
+			//form 유의사항 각 태그의 타입을 지정해줌으로서 동작이 실행되지 않게해준다.
+			//ex) button의 타입을 button으로 지정해서 일반 버튼으로 지정
+			$('.add_info').submit(function (r) {
+				var address = $("#address").val();
+				var parkSize = $("#parkSize").val();
+				var price = $("#price").val();
+				var picFile = $("#picFile").val();
+				var addFile = $("#addFile").val();
+				//값이 입력되지 않으면 다음 페이지로 넘어가는 것을 막음
+				//return 적어서 값 반환
+				if (address === '') {
+					alert("주소가 입력되지 않았습니다.");
+					r.preventDefault();
+
+					return;
+				}
+				if (parkSize === '') {
+					alert("주차장 크기가 입력되지 않았습니다.");
+					r.preventDefault();
+
+					return;
+				}
+				if (price === '') {
+					alert("금액이 입력되지 않았습니다.");
+					r.preventDefault();
+
+					return;
+				}
+				if (picFile === '') {
+					alert("주차장 사진이 등록되지 않았습니다.");
+					r.preventDefault();
+
+					return;
+				}
+				if (addFile === '') {
+					alert("관련 서류파일이 등록되지 않았습니다.");
+					r.preventDefault();
+
+					return;
+				}
+			});
+			mapContainer = document.getElementById('map'), // 지도를 표시할 div
+				mapOption = {
+					center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+					level: 5 // 지도의 확대 레벨
+				};
+
+			//지도를 미리 생성
+			map = new daum.maps.Map(mapContainer, mapOption);
+			//주소-좌표 변환 객체를 생성
+			geocoder = new daum.maps.services.Geocoder();
+			//마커를 미리 생성
+			marker = new daum.maps.Marker({
+				position: new daum.maps.LatLng(37.537187, 127.005476),
+				map: map
+			});
+
+
+		})
+
+		function displaypicFileName() {
+			const fileInput = document.getElementById('picFile');
+			const picfileName = document.getElementById('picfileName');
+
+			if (fileInput.files.length > 0) {
+				const fileName = fileInput.files[0].name;
+				picfileName.textContent = '>> 선택한파일: ' + fileName;
+			} else {
+				picfileName.textContent = '>> 파일이 선택되지 않았습니다.';
+			}
+		};
+
+		function displayaddFileName() {
+			const fileInput = document.getElementById('addFile');
+			const addfileName = document.getElementById('addfileName');
+
+			if (fileInput.files.length > 0) {
+				const fileName = fileInput.files[0].name;
+				addfileName.textContent = '>> 선택한파일: ' + fileName;
+			} else {
+				addfileName.textContent = '>> 파일이 선택되지 않았습니다.';
+			}
+		};
+		function addressPostcode() {
+			new daum.Postcode({
+
+				oncomplete: function (data) {
+					var addr = data.address; // 최종 주소 변수
+
+					// 주소 정보를 해당 필드에 넣는다.
+					document.getElementById("address_input").value = addr;
+					// 주소로 상세 정보를 검색
+					geocoder.addressSearch(data.address, function (results, status) {
+						// 정상적으로 검색이 완료됐으면
+						if (status === daum.maps.services.Status.OK) {
+
+							var result = results[0]; //첫번째 결과의 값을 활용
+
+							// 해당 주소에 대한 좌표를 받아서
+							var coords = new daum.maps.LatLng(result.y, result.x);
+							// 지도를 보여준다.
+							mapContainer.style.display = "block";
+							map.relayout();
+							// 지도 중심을 변경한다.
+							map.setCenter(coords);
+							// 마커를 결과값으로 받은 위치로 옮긴다.
+							marker.setPosition(coords);
+
+						}
+					});
+				}
+			}).open();
+		}
+
+	</script>
+
+	<body>
+
+		<th:block th:include="/headfoot/header.html"></th:block>
+		<form class="add_info" action="/map/action" method="post" enctype="multipart/form-data">
+			<table class="add">
+				<tr>
+					<td colspan="2">
+						<div class="parking_add">◼ 공유주차장 등록</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="map" style="width:550px;height:500px;display:block"></div>
+					</td>
+					<td>
+						<div class="info">
+
+							<div class="info_title">✔ 필수 정보 입력</div>
+							<div class="parking_address">▪ 주차장 주소</div>
+
+							<input readonly type="text" name="address" onclick="addressPostcode()" class="info_01"
+								id="address_input" placeholder="주소를 입력해주세요."></input>
+							<input type="button" class="search_ad" onclick="addressPostcode()" value="우편번호 검색">
+							<!--<button type="submit" id="search_ad">검색</button>-->
+							<br>
+							<br>
+							<br>
+							<br>
+							<div class="parking_size">▪ 주차장 크기 <p id="file">(평 단위 제외 / 숫자로만 입력)</p>
+							</div>
+							<div class="size">
+								<input type="number" name="parkSize" class="info_01" id="parkSize"
+									placeholder="> ㎡"></input>
+							</div><br>
+							<div class="parking_pay">▪ 주차 요금 <p id="file">(원 단위 제외 / 숫자로만 입력)</p>
+							</div>
+							<div class="pay">
+								<input type="number" name="price" class="info_02" id="price" placeholder="> 원"></input>
+							</div><br>
+							<div class="parking_info">▪ (선택사항) 주차장 세부정보</div><br>
+							<div class="info">
+								<textarea class="info_03" name="parkDescription" id="parkDescription"
+									placeholder=" 해당 주자창의 자세한 위치를 설명해주세요."></textarea>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table class="file">
+				<tr>
+					<td colspan="2">
+						<div class="file_add">◼ 해당 주차 구역의 사진과 관련 서류파일을 첨부해주세요.</div>
+					</td>
+				</tr>
+				<tr>
+					<td id="txt">
+						<div>▪ 공유 할 해당 주차장 파악이 가능한 사진</div>
+					</td>
+					<td>
+						<input type="file" accept="image/jpeg,.png" id="picFile" name="picFile" style="display: none;"
+							onchange="displaypicFileName()" multiple />
+						<input type="button" value="사진 등록하기" id="btn"
+							onclick="document.getElementById('picFile').click();" />
+						<!--<button id="btn" type="button">사진 등록하기</button>-->
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p id="picfileName">>> 주차장 사진</p>
+					</td>
+				</tr>
+				<tr>
+					<td id="txt">
+						<div>▪ 토지, 건물 관계 입증 서류<p id="file">(예 : 토지매매서,임대계약서)</p>
+						</div>
+					</td>
+					<td>
+						<input type="file" accept=".doc, .docx, .pdf" id="addFile" name="addFile" style="display: none;"
+							onchange="displayaddFileName()" multiple />
+						<input type="button" value="파일 등록하기" id="btn"
+							onclick="document.getElementById('addFile').click();" />
+						<!--<button id="btn" type="button">파일 등록하기</button>-->
+					</td>
+				</tr>
+				<hr>
+				<tr>
+					<td>
+						<p id="addfileName">>> 관련 서류파일</p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<br>
+						<br>
+						<br>
+						<button name="btn_add" class="btn_add" id="btn_add" type="submit">내 주차장 등록하기</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+
+
+</div>
+
+<th:bloclk th:include="/headfoot/footer.html">
+	</th:block>
+	<!--<p>
+		<span>상호명:공유주차 |</span>
+		<span>사업자등록번호:000-00-0000 |</span>
+		<span>통신판매업 신고번호:제 000-서대문구-1004호 |</span>
+		<span>대표:남상규</span><br>
+		<span>서울시 서대문구 신촌동 00-00,000타워 3층 (우)0463 |</span>
+		<span>전화:1589-2132 |</span>
+		<span>ghffksem@DPK.com</span><br>
+		<span>◎ 2023 쉽고 편리한 주차 플랫폼 공유주차 </span>
+	</p>-->
+
+
+	</body>
+
+
+</html>
