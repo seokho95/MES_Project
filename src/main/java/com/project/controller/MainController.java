@@ -36,6 +36,10 @@ public class MainController {
 	public String footerTest() {
 		return "headfoot/footer";
 	}
+	@RequestMapping("/main")
+	public String Main() {
+		return "login_html/main";
+	}
 	
 }
 
