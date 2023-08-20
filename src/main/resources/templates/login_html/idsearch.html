@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8" />
+   <meta name="viewport" content="initial-scale=1, width=device-width" />
+   <link rel="stylesheet" href="/login_css/global.css" />
+   <link rel="stylesheet" href="/login_css/idsearch.css" />
+</head>
+
+<body>
+<div class="div">
+  <div class="div">
+    <div class="div1"></div>
+    <button class="ob-forms">인증</button>
+    <button class="ob-forms5">확인</button>
+    <div class="parent">
+      <div class="div2">
+        <div class="child">
+          <input type="text" name="insert_child" placeholder="인증번호 6자리 입력" maxlength="6" />
+        </div>
+      </div>
+      <img class="icon-circle-check" alt="" src="/img/login_img/check.svg" />
+    </div>
+  </div>
+   <div class="group">
+      <div class="div2">
+         <div class="child"></div>
+         <input type="email" id="emailInput" name="insert_child" placeholder="이메일 주소 입력" maxlength="25" />
+      </div>
+      <img class="icon-envelope-closed" alt="" src="/img/login_img/email.svg" />
+   </div>
+   <div class="container">
+      <div class="div2">
+         <div class="child"></div>
+         <input type="text" name="insert_child" placeholder="이름" maxlength="6" />
+      </div>
+      <img class="icon" alt="" src="/img/login_img/name.svg" />
+   </div>
+   <div class="rectangle-parent">
+      <div class="group-child"></div>
+      <div class="div8">
+         회원정보에 등록한 이메일로 인증번호를 받을 수 있습니다.
+      </div>
+   </div>
+   <div class="ob-forms1">
+      <label><input type="checkbox" name="check" value='email' class="gee" onclick="doOpenCheck(this)">본인확인 이메일로 인증</label>
+   </div>
+   <div class="group-div">                                             
+      <div class="div2">
+         <div class="child"></div>
+         <input type="text" name="insert_child" placeholder="인증번호 6자리 입력" maxlength="6" />
+      </div>
+      <img class="icon-circle-check1" alt="" src="/img/login_img/check.svg" />
+   </div>
+   <div class="parent1">
+      
+      <div class="child"></div>
+      <input type="tel" id="phoneInput" name="insert_child" placeholder="휴대폰 번호" maxlength="11" />
+      <img class="icon1" alt="" src="/img/login_img/phone.svg" />
+   </div>
+   <div class="parent2">
+      <div class="div2">
+         <div class="child"></div>
+         <input type="text" name="insert_child" placeholder="이름" maxlength="6" />
+      </div>
+      <img class="icon" alt="" src="/img/login_img/name.svg" />
+   </div>
+   <div class="rectangle-group">
+      <div class="group-child"></div>
+      <div class="div8">
+         회원정보에 등록한 휴대전화 번호와 입력한 휴대전화 번호가 같아야,
+         인증번호를 받을 수 있습니다.
+      </div>
+   </div>
+   <div class="ob-forms3">
+      <label><input type="checkbox" name="check" value='phone' class="zee" onclick="doOpenCheck(this)">회원정보에 등록한 휴대로전화로 인증</label>
+   </div>
+   <div class="div18">아이디 찾는 방법을 선택해주세요.</div>
+   <div class="parent3">
+      <div class="div19">
+         <img class="icon3" alt="" src="/img/login_img/ppangppang.png" />
+      </div>
+      <div class="div20">공유주차</div>
+   </div>
+   </div>
+   <script>
+      function doOpenCheck(chk) {
+         var obj = document.getElementsByName("check");
+         for (var i = 0; i < obj.length; i++) {
+            if (obj[i] != chk) {
+               obj[i].checked = false;
+            }
+         }
+      }
+      const emailInput = document.getElementById("emailInput"); // 이메일 입력 필드
+        const phoneInput = document.getElementById("phoneInput"); // 휴대폰 번호 입력 필드
+        const verificationInput = document.querySelector(".group-div input"); // 인증번호 입력 필드
+        const verificationInput1 = document.querySelector(".parent input"); // 인증번호 입력 필드
+        const verificationCheckbox = document.querySelector(".zee"); // 휴대전화로 인증 체크박스
+        const verificationCheckbox1 = document.querySelector(".gee"); // 휴대전화로 인증 체크박스
+        let serverVerificationCode = "123456"; // 서버에서 받은 인증번호 (실제로는 서버에서 제공)
+      const searchButton = document.querySelector('.ob-forms');
+      const confirmButton = document.querySelector('.ob-forms5'); // 확인 버튼 정의
+
+      searchButton.addEventListener('click', (e) => {
+
+            var emailCheckbox = document.querySelector(".gee");
+            var phoneCheckbox = document.querySelector(".zee");
+            var errorLabel = document.getElementById("errorLabel");
+         
+            if (!emailCheckbox.checked && !phoneCheckbox.checked) {
+                event.preventDefault();
+                alert("본인확인 방법을 선택해야 합니다.");
+            } else {
+                if (emailCheckbox.checked) {
+                    if (emailInput.value.trim() === "") {
+                        alert("이메일 주소를 입력해주세요.");
+                    } else {
+                        sendEmailVerification();
+                    }
+                } else if (phoneCheckbox.checked) {
+                    if (phoneInput.value.trim() === "") {
+                        alert("휴대폰 번호를 입력해주세요.");
+                    } else {
+                        sendSMSVerification();
+                    }
+                }
+            }
+        });
+      confirmButton.addEventListener('click', (e) => {
+            // 여기에서 인증 상태를 확인하고, 인증이 완료되었을 때 idsearch_result 페이지로 이동
+            if (verificationCheckbox.checked) {
+                const userVerificationCode = verificationInput.value.trim(); // 사용자가 입력한 인증번호
+
+                if (userVerificationCode === serverVerificationCode) {
+                    // 인증 완료 처리
+                    window.location.href = "/idsearch_result";
+                } else {
+                    alert("인증번호가 올바르지 않습니다.");
+                }
+            }
+            if (verificationCheckbox1.checked) {
+                const userVerificationCode = verificationInput1.value.trim(); // 사용자가 입력한 인증번호
+
+                if (userVerificationCode === serverVerificationCode) {
+                    // 인증 완료 처리
+                    window.location.href = "/idsearch_result";
+                } else {
+                    alert("인증번호가 올바르지 않습니다.");
+                }
+            }
+           
+        });
+
+        function sendEmailVerification() {
+            // 이 부분에서 이메일 인증을 처리하는 코드를 작성
+            // 이메일 주소를 가져와서 서버로 전송하고, 인증번호를 발송
+            const emailInput = document.getElementById("emailInput").value;
+            alert(`이메일 주소 ${emailInput}로 인증번호를 발송하였습니다.`);
+        }
+
+        function sendSMSVerification() {
+            // 이 부분에서 SMS 인증을 처리하는 코드를 작성
+            // 휴대폰 번호를 가져와서 서버로 전송하고, 인증번호를 발송
+            const phoneInput = document.getElementById("phoneInput").value;
+            alert(`휴대폰 번호 ${phoneInput}로 인증번호를 발송하였습니다.`);
+        }
+   </script>
+</body>
+
+</html>
