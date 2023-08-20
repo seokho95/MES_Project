@@ -379,8 +379,10 @@
 		const verificationInput1 = document.querySelector("#insert_confirm2"); // 인증번호 입력 필드
 		const verificationCheckbox = document.querySelector("#phonecheck"); // 휴대전화로 인증 체크박스
 		const verificationCheckbox1 = document.querySelector("#emailcheck"); // 이메일로 인증 체크박스
-		const searchButton = document.querySelector(".btn_confirm2");
-		const confirmButton = document.querySelector(".btn_confirm3");
+		const searchButton = document.querySelector(".btn_confirm2"); // 인증번호 전송 버튼
+		const confirmButton = document.querySelector(".btn_confirm3"); // 인증번호 작성 후 확인버튼
+		const insertName1 = document.querySelector("#insert_name1");// 이름 입력
+		const insertName2 = document.querySelector("#insert_name2"); // 이름 입력
 		let serverVerificationCode = "123456";
 
 		searchButton.addEventListener('click', (e) => {
@@ -399,17 +401,26 @@
 						if (emailInput.value.trim() === "") {
 							alert("이메일 주소를 입력해주세요.");
 						} else {
-							sendEmailVerification();
+							if (insertName2.value.trim() === "") {
+								alert("이름을 입력해주세요.");
+							} else {
+								sendEmailVerification();
+							}
 						}
 					} else if (phoneCheckbox.checked) {
 						if (phoneInput.value.trim() === "") {
 							alert("휴대폰 번호를 입력해주세요.");
 						} else {
-							sendSMSVerification();
+							if (insertName1.value.trim() === "") {
+								alert("이름을 입력해주세요.");
+							} else {
+								sendSMSVerification();
+							}
 						}
 					}
 				}
 			}
+
 		});
 		confirmButton.addEventListener('click', (e) => {
 			if (!isIdVerified) {
@@ -443,19 +454,14 @@
 		});
 
 		function sendEmailVerification() {
-			// 이 부분에서 이메일 인증을 처리하는 코드를 작성
-			// 이메일 주소를 가져와서 서버로 전송하고, 인증번호를 발송
 			const emailInput = document.getElementById("insert_email").value;
-			alert(`이메일 주소 ${insert_email}로 인증번호를 발송하였습니다.`);
+			alert(`이메일 주소 ${emailInput}로 인증번호를 발송하였습니다.`);
 		}
 
 		function sendSMSVerification() {
-			// 이 부분에서 SMS 인증을 처리하는 코드를 작성
-			// 휴대폰 번호를 가져와서 서버로 전송하고, 인증번호를 발송
 			const phoneInput = document.getElementById("insert_phone_number").value;
-			alert(`휴대폰 번호 ${insert_phone_number}로 인증번호를 발송하였습니다.`);
+			alert(`휴대폰 번호 ${phoneInput}로 인증번호를 발송하였습니다.`);
 		}
-
 	}
 </script>
 
@@ -486,17 +492,14 @@
 				<img src="/img/login_img/user.svg" alt="">
 				<input type="text" id="insert_name1" maxlength="10" placeholder="이름">
 			</div>
-			<li class="name_result1"></li>
 			<div class="phone_number">
 				<img src="/img/login_img/phone.png" alt="">
 				<input type="text" id="insert_phone_number" maxlength="14" placeholder="휴대번호">
 			</div>
-			<li class="phone_result"></li>
 			<div class="input_confirm">
 				<img src="/img/login_img/check.svg" alt="">
 				<input type="text" id="insert_confirm1" maxlength="6" placeholder="인증번호 6자리 입력">
 			</div>
-			<li class="confirm_result1"></li>
 		</div>
 		<div class="confirm_email">
 			<label><input type="checkbox" name="check" class="check_confirm" id="emailcheck"
@@ -506,17 +509,14 @@
 				<img src="/img/login_img/user.svg" alt="">
 				<input type="text" id="insert_name2" maxlength="10" placeholder="이름">
 			</div>
-			<li class="name_result2"></li>
 			<div class="input_email">
 				<img src="/img/login_img/email.png" alt="">
 				<input type="text" id="insert_email" placeholder="이메일 주소 입력">
 			</div>
-			<li class="email_result"></li>
 			<div class="input_confirm">
 				<img src="/img/login_img/globe.png" alt="">
 				<input type="text" id="insert_confirm2" maxlength="6" placeholder="인증번호 6자리 입력">
 			</div>
-			<li class="confirm_result2"></li>
 			<div class="btn">
 				<button class="btn_confirm2">인증</button>
 				<button class="btn_confirm3">확인</button>
@@ -524,8 +524,8 @@
 		</div>
 		<div id="popup" class="popup" style="display: none;">
 			<div class="popup-content">
-				<p id="id_result_popup" style="margin: auto; font-size: 20px; ">아이디 인증 완료</p>
-				<button id="close_popup" style="margin: auto; font-size: 20px;">확인</button>
+				<p id="id_result_popup" style="text-align: center; font-size: 20px; margin-top: 50px; margin-left: 0px;">아이디 인증 완료</p>
+				<button id="close_popup" style="margin-left: 170px; margin-top: 30px; font-size: 20px;">확인</button>
 			</div>
 		</div>
 	</div>

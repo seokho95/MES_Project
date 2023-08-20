@@ -83,8 +83,8 @@
     }
     .btn_login{
         display: flex;
-        width: 344px;
-        height: 44px;
+        width: 312px;
+        height: 24px;
         padding: 10px 15px;
         flex-direction: column;
         justify-content: center;
@@ -112,8 +112,8 @@
     }
     .btn_searchpw{
         display: flex;
-        width: 344px;
-        height: 46px;
+        width: 312px;
+        height: 24px;
         padding: 10px 15px;
         flex-direction: column;
         justify-content: center;
@@ -153,7 +153,7 @@
 </style>
 
 <body>
-    <body>
+
         <form method="post">
             <div class="header">
                 <img src="/img/Parking_logo.png" alt="">
@@ -164,15 +164,16 @@
                 <p class="second">로그인 또는 비밀번호 찾기 버튼을 눌러주세요!</p>
             </div>
             <div class="textbox">
-                <table>
-                    <tr>
-                        <td>가입 이력 : yyyy.MM.dd<br>ID : 00000000</td>
-                    </tr>
-                </table>
-                <button onclick="window.location.href='login';" class='btn_login'>로그인</button>
-                <button class='btn_searchpw'>비밀번호 찾기</button>
+                 <table>
+        <tr>
+            <th>가입 이력</th>
+            <th>ID</th>
+        </tr>
+    </table>
+ 			<a href="/" class='btn_login'>로그인</a>
+    		<a href="searchPasswd" class='btn_searchpw'>비밀번호 찾기</a>
             </div>
         </form>
-    </body>
+
 </body>
 </html>
