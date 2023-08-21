@@ -69,5 +69,8 @@
 	<delete id="deletePost" parameterType="int">
 		DELETE FROM board WHERE post_num = #{pno}
 	</delete>
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM board_comment WHERE comment_num = #{cno}
+	</delete>
 
 </mapper>

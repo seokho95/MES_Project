@@ -67,7 +67,7 @@ public class BoardDTO {
 		return post_date;
 	}
 	public String getPostDateShort() {
-		return post_date.substring(0,10);
+		return post_date.substring(2,10);
 	}
 
 	public void setPostDate(String postDate) {

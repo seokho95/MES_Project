@@ -5,11 +5,12 @@
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 	<style type="text/css">
 		#container {
 			width: 1280px;
 			margin: 0 auto;
+			font-family: 'Noto Sans KR', sans-serif;
 		}
 
 		#container table {
@@ -58,24 +59,35 @@
 			color: #FFFFFF
 		}
 
-		.hate {
-			transform: rotate(0.5turn);
-		}
 
 		.text_center {
 			text-align: center;
 		}
 
-		.btn_like {
-			width: 64px;
-			display: inline-block;
-			color: black;
-			text-decoration: none;
-		}
 
 		.comment_form {
 			width: 100%;
 			border: 1px solid black;
+			border-radius: 10px;
+			display: flex;
+			justify-content: flex-end;
+			align-items: flex-end;
+		}
+
+		.comment_form form {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+		}
+
+		.comment_form textarea {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+
+		.comment_form button {
+			align-self: flex-end;
+			border-bottom-right-radius: 10px;
 		}
 
 		.writer {
@@ -127,13 +139,35 @@
 		}
 
 		#content {
-			font-size: 1.3em;
 			height: 500px;
 			padding: 10px;
 		}
 
 		#detail {
 			color: rgb(128, 128, 128);
+		}
+
+
+		#btn_ud {
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: #BF9BFA;
+			color: black;
+			border: none;
+			text-decoration: none;
+			cursor: pointer;
+			margin-right: 10px;
+		}
+
+		#btn_ud:hover {
+			color: white;
+			background-color: #9555FF;
+		}
+		.btn_delete{
+			text-decoration: none;
+			color:#BF9BFA;
+			
+			
 		}
 	</style>
 </head>
@@ -171,11 +205,9 @@
 
 			<th:block th:if="${session.user.name == board.getUserName }">
 				<tr>
-					<td colspan="2">
-						<a th:href="@{/board/post/updateView/{pno}(pno=${board.getPostNum})}"
-							id="btn_update">수정</button>
-							<a th:href="@{/board/post/delete/{pno}(pno=${board.getPostNum})}"
-								id="btn_delete">삭제</button>
+					<td colspan="2" style="text-align: right;">
+						<a th:href="@{/board/post/updateView/{pno}(pno=${board.getPostNum})}" id="btn_ud">수정</button>
+							<a th:href="@{/board/post/delete/{pno}(pno=${board.getPostNum})}" id="btn_ud">삭제</button>
 					</td>
 				</tr>
 			</th:block>
@@ -186,26 +218,29 @@
 						<form action="comment" method="post">
 							<input type="hidden" name="pno" th:value="${board.getPostNum}">
 							<textarea name="comment" placeholder="댓글을 입력하세요"></textarea>
-							<button>댓글작성</button>
+							<button>작성</button>
 						</form>
 					</div>
 				</td>
 			</tr>
 		</table>
+		<h3>댓글</h3>
 		<hr>
 
 		<tr th:each="c : ${comment}">
 			<div class="comment">
 				<p>
-					<input type="hidden" name="cno" value="${c.cno }">
-					<span>[[${c.getUser_name()}]]</span>
+					<input type="hidden" name="cno" value="${c.cno}">
+					<span><b>[[${c.getUser_name()}]]</b></span>
 				</p>
 				<p>
-					[[${c.getComment_content()}]]
+					[[${c.getComment_content()}]]&nbsp;&nbsp;&nbsp;&nbsp;
+					<th:if="${session.user.name==board.getUserName}">
+						<a th:href="'/comment/delete/' + ${c.getComment_num} + '/' + ${board.getPostNum}" class="btn_delete">삭제</a>
+						</th:if>
 				</p>
-				<th:if "${session.user.name == board.getUserName }">
-					<a href="post/delete/{cno}(cno=${c.getComment_num })}">댓글 삭제</a>
-				</th:if>
+				<p class="delete-button">
+				</p>
 			</div>
 		</tr>
 	</section>

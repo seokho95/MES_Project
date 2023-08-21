@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+	<script type="text/javascript">
+
+	</script>
+	<style type="text/css">
+	
+		#container {
+            max-width: 100%; 
+            height: 850px;
+            margin: 0 auto;
+            font-family: 'Noto Sans KR', sans-serif;
+            padding:10px 30px 10px 10px;
+            box-sizing: border-box;
+        }
+
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            table-layout: fixed;
+        }
+
+        #container th {
+            width: 100%; 
+            text-align: left;
+            padding: 5px;
+            font-size: 0.8em;
+        }
+
+        #container td {
+            width: 100%;
+            padding: 5px;
+            height: 40px;
+        }
+
+        #title {
+            width: 100%;
+            height: 40px;
+            box-sizing: border-box;
+            border-width: 1px;
+            border-radius: 5px;
+        }
+
+        .btn {
+            text-decoration: none;
+            background-color: #BF9BFA;
+            width: 80px;
+            height: fit-content;
+            display: inline-block;
+            padding: 5px 0px;
+            font-weight: normal;
+            border: none;
+            text-align: center;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .btn:hover {
+            background-color: #9555FF;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 400px;
+            height: 300px;
+            resize: none;
+            box-sizing: border-box;
+        }
+
+        p input {
+            width: 30%;
+        }
+
+        #writer {
+            font-weight: bold;
+            color: #9555FF;
+        }
+
+        hr {
+            border: 2px solid #9555FF;
+            margin-bottom: 20px;
+        }
+
+        .ck.ck-editor {
+            max-width: 400px;
+        }
+
+        .ck-editor__editable {
+            min-height: 400px;
+        }
+        a{
+			text-decoration: none;
+			color: black;
+		}
+
+	</style>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<body>
+	<th:block th:if="${session.user == null }">
+		<script>
+			alert("로그인을 하셔야 이용할수 있습니다.");
+			location.href = "/";
+		</script>
+	</th:block>
+
+	<div id="container">
+		<h2><a href="/app">◀</a>게시글 수정</h2>
+		<hr>
+		<form th:action="@{/app/post/update/{pno}(pno=${board.getPostNum})}" enctype="multipart/form-data" method="post">
+			<table>
+				<tr><th>제목</th></tr>
+				<tr>
+					
+					<td><input type="text" id="title" name="title" th:value="${board.getPostTitle }"></td>
+				</tr>
+				<tr><th>작성자</th></tr>
+				<tr>
+					
+					<td id="writer">
+						<input type="hidden" name="writer" th:value="${session.user.membershipNumber }">
+						[[${session.user.name }]]
+					</td>
+				</tr>
+				<tr><th>내용</th></tr>
+				<tr>
+					
+					<td><textarea name="content" id="editor">[[${board.getPostContent }]]</textarea></td>
+					
+				</tr>
+
+					<td colspan="2" style="text-align: right">
+						<button class="btn">작성</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	
+</body>
+
+<script>
+		var ckeditor;
+		ClassicEditor.create(document.querySelector("#editor"), {
+			
+			language: "ko",
+			
+		}).catch(error => {
+			console.error(error);
+		});
+
+		function CustomUploadPlugin(editor) {
+			editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+				return new UploadAdapter(loader, 'test');
+			}
+		}
+
+		// 값 얻기
+		var content = ckeditor.getData();
+		// focus
+		ckeditor.focus();
+
+	</script>
+</html>

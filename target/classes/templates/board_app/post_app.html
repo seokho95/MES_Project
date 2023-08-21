@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+	<style type="text/css">
+		#container {
+            max-width: 100%;
+            height: 750px;
+            margin: 0 auto;
+            font-family: 'Noto Sans KR', sans-serif;
+            padding:10px 30px 10px 10px;
+        }
+        table{
+			width: 100%;
+			table-layout: fixed;
+		}
+		
+
+        .btn {
+            text-decoration: none;
+            background-color: #e8e8e8;
+            min-width: 60px;
+            display: inline-block;
+            padding: 5px 10px;
+            font-weight: normal;
+            border: 1px solid #585858;
+            text-align: center;
+            color: black;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+		.comment_form {
+			width: 100%;
+			border: 1px solid black;
+		}
+
+
+       
+
+        .comment_form textarea {
+            width: 100%;
+            height: 60px; 
+            margin-top: 10px;
+            font-size: 14px; 
+            outline: none;
+            border: none;
+            resize: none;
+            box-sizing: border-box;
+        }
+
+        .comment_form button {
+            width: 80px;
+            height: 30px;
+            font-weight: bold;
+            font-size: 12px; 
+            background-color: #9555FF;
+            border: none;
+            color: white;
+        }
+
+
+        #content {
+            height: 100%; 
+            max-height: none; 
+            padding: 10px;
+        }
+
+
+        #btn_ud {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #BF9BFA;
+            color: black;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .btn_delete {
+            text-decoration: none;
+            color: #BF9BFA;
+        }
+        
+        hr {
+			border: 2px solid #9555FF;
+		}
+		h2{
+			margin : 5px 0;
+		}
+		.comment_container{
+			width: 100%;
+			height: 300px;
+		}
+		a{
+			text-decoration: none;
+			color: black;
+		}
+	</style>
+</head>
+
+<body>
+	<th:block th:if="${session.user == null }">
+		<script>
+			alert("로그인을 하셔야 이용할수 있습니다.");
+			location.href = "/";
+		</script>
+	</th:block>
+	<section id="container">
+		<h1><a href="/app">◀</a>게시글</h1>
+		<hr>
+		<table>
+			<tr>
+				<td>
+					<h2>[[${board.getPostTitle}]]</h2>
+				</td>
+			</tr>
+			<tr>
+				<td id="detail">[[${board.getUserName}]]</td>
+			</tr>
+			<tr>
+				<td id="detail">[[${board.getPostDate}]]</td>
+			</tr>
+		</table>
+		<hr>
+		<div id="content">
+			[(${board.getPostContent})]
+		</div>
+		<table>
+
+
+			<th:block th:if="${session.user.name == board.getUserName }">
+				<tr>
+					<td colspan="2" style="text-align: right;">
+						<a th:href="@{/app/post/updateView/{pno}(pno=${board.getPostNum})}" id="btn_ud">수정</button>
+							<a th:href="@{/app/post/delete/{pno}(pno=${board.getPostNum})}" id="btn_ud">삭제</button>
+					</td>
+				</tr>
+			</th:block>
+
+			<tr>
+				<td colspan="2">
+					<div class="comment_form">
+						<form action="app/comment" method="post">
+							<input type="hidden" name="pno" th:value="${board.getPostNum}">
+							<textarea name="comment" placeholder="댓글을 입력하세요"></textarea>
+							<button>작성</button>
+						</form>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<h3>댓글</h3>
+		<hr>
+		<div class="comment_container">
+		<tr th:each="c : ${comment}">
+			<div class="comment">
+				<p>
+					<input type="hidden" name="cno" value="${c.cno}">
+					<span><b>[[${c.getUser_name()}]]</b></span>
+				</p>
+				<p>
+					[[${c.getComment_content()}]]&nbsp;&nbsp;&nbsp;&nbsp;
+					<th:if="${session.user.name==board.getUserName}">
+						<a th:href="'/app/comment/delete/' + ${c.getComment_num} + '/' + ${board.getPostNum}" class="btn_delete">삭제</a>
+						</th:if>
+				</p>
+				<p class="delete-button">
+				</p>
+			</div>
+		</tr>
+		</div>
+	</section>
+</body>
+
+
+</html>

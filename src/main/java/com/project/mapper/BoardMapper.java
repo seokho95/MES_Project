@@ -29,5 +29,7 @@ public interface BoardMapper {
 	int updatePost(BoardDTO dto);
 
 	int deletePost(int pno);
+
+	int deleteComment(int cno);
 	
 }

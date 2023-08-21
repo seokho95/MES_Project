@@ -67,4 +67,9 @@ public class BoardService {
 		return boardMapper.deletePost(pno);
 	}
 
+
+	public int deleteComment(int cno) {
+		return boardMapper.deleteComment(cno);
+	}
+
 }

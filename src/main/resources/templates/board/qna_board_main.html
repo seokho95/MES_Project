@@ -3,12 +3,14 @@
 
 <head>
 	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/login_css/global.css" />
 	<title>문의사항</title>
 </head>
 <style type="text/css">
 	section {
 		width: 1280px;
 		margin: 0 auto;
+		font-family: 'Noto Sans KR', sans-serif;
 	}
 
 	table {
@@ -44,11 +46,15 @@
 	}
 
 	.btn_write {
+		padding: 10px 20px;
+		background-color: #BF9BFA;
+		color: black;
 		border: none;
-		padding: 0px 10px;
-		width: 80px;
-		height: 30px;
 		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.btn_write:hover {
 		color: white;
 		background-color: #9555FF;
 	}
@@ -66,11 +72,11 @@
 		color: black;
 
 	}
-	.page a{
+
+	.page a {
 		font-size: 1.2em;
 		text-decoration: none;
 	}
-	
 </style>
 
 <script>
@@ -123,24 +129,24 @@
 				<tr>
 					<td colspan="4">
 						<div class="page">
-							<a th:if="${page.previousPageGroup}"
-								th:href="@{board(pageNo=${pagging.startPageOfPageGroup - 1 })}">◀</a>
+							<a th:if="${page.isPreviousPageGroup() }"
+								th:href="@{board(pageNo=${page.startPageOfPageGroup - 1 })}">◀</a>
 
 							<th:block
 								th:each="i : ${#numbers.sequence(page.startPageOfPageGroup, page.endPageOfPageGroup)}">
 								<a th:href="@{board(pageNo=${i })}">[[${ i}]]</a>
 							</th:block>
 
-							<a th:if="${page.nextPageGroup}"
+							<a th:if="${page.isNextPageGroup() }"
 								th:href="@{board(pageNo=${page.endPageOfPageGroup + 1 })}">▶</a>
 						</div>
 					</td>
-					<td>
-							<a th:href="@{/board/post/write}" class="btn_write">글쓰기</a>
+					<td class="btn_write_case">
+						<a th:href="@{/board/post/write}" class="btn_write">글쓰기</a>
 					</td>
 				</tr>
 			</tbody>
-			
+
 		</table>
 	</section>
 
