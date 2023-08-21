@@ -144,6 +144,30 @@ public class LoginController {
 		}
 		return res.toString();
 	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////APP 로그인 controller////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////		
+	
+	@RequestMapping("/mdLogin_app")
+	public String mdLogin() {
+		return "login_html/mdLogin_app";
+	}	
+	
+	@RequestMapping("app/loginInput")
+	public String mdLoginApp(String userId, String passwd, HttpSession session) {
+
+	    UserDTO dto = userService.mdLoginApp(userId, passwd);
+	    if (dto != null) {
+	        session.setAttribute("user", dto);
+
+	        if ("admin".equals(dto.getUserId())) { // 관리자인 경우
+	            return "login_html/manager_page.html"; // 관리자 전용 페이지로 이동
+	        } else {
+	            return "redirect:/main"; // 일반 사용자 페이지로 이동
+	        }
+	    }
+	    return "redirect:/";
+	}
 	
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////프로젝트 로그인 controller//////////////////////////////////////////
@@ -170,7 +194,7 @@ public class LoginController {
 	        if ("admin".equals(dto.getUserId())) { // 관리자인 경우
 	            return "login_html/manager_page.html"; // 관리자 전용 페이지로 이동
 	        } else {
-	            return "redirect:/board"; // 일반 사용자 페이지로 이동
+	            return "redirect:/main"; // 일반 사용자 페이지로 이동
 	        }
 	    }
 	    return "redirect:/";

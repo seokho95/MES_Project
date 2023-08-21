@@ -12,6 +12,8 @@ public interface UserMapper {
 
 	UserDTO login(Map<String, Object> map);
 
+	UserDTO mdLoginApp(Map<String, Object> map);
+	
 	int insertUser(UserDTO dto);
 
 	int UserCheckId(String id);

@@ -26,6 +26,14 @@ public class UserService {
 
 		return mapper.login(map);
 	}
+	
+	public UserDTO mdLoginApp(String userId, String passwd) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("passwd", passwd);
+
+		return mapper.login(map);
+	}
 
 	public int insertUser(UserDTO dto) {
 		return mapper.insertUser(dto);

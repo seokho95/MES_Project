@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+</style>
+<style>
+    /* id는 # class는 . */
+    .container{
+     
+        width: 460px;
+        height: 900px;
+
+        background-color: #F2EAFF;
+    }
+
+    img{
+        margin-top: 10px;
+        margin-left: 20px;
+        margin-right: 8px;
+        width: 57px;
+        height: 52px;
+
+    }
+    .header{
+        margin-top: 29px;
+        color: #9555FF;
+        font-family: 'Jua', sans-serif;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 200;
+        line-height: normal;
+        letter-spacing: 0.4px;
+        -webkit-text-stroke: 1px #555050; 
+    }
+    .title{
+        display: flex;
+        flex-direction: row;
+    }
+    .btn_kakao_login:hover{
+		background-color: rgb(255, 255, 51);
+	}
+    .btn_kakao_login{
+	padding: 25px 0px;
+    display: flex;
+    width: 420px;
+    height: 0;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    flex-shrink: 0;
+    margin-left: 10px;
+    margin-top: -488px;
+    border-radius: 8px;
+    border: 1px solid #D3D3D3;
+    opacity: 0.8500000238418579;
+    background: rgba(254, 229, 0, 1);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    /* font-family: 'Noto Sans KR', sans-serif; */
+    text-decoration: none;
+    /* text-align: center; */
+    color: #000000 85%;
+    text-align: center;
+    text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 60px;
+    }
+    .btn_login{
+        padding: 25px 0px;
+        display: flex;
+        width: 420px;
+        height: 44px;
+ 
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 8px;
+        border: 1px solid #D3D3D3;
+        opacity: 0.8500000238418579;
+        background: #BF9BFA;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+        text-decoration: none;
+        text-align: center;
+        color: #FFF;
+        text-align: center;
+        text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 60px; /* 200% */
+    }
+    .btn_login:hover{
+        background-color: #9555FF;
+    }
+    #check_keep_login{
+    	margin-left: 20px;
+    	margin-bottom: 0px;
+    	border-radius: 5px;
+    	border: 1px solid #E2E1E5;
+    	background: #E2E1E5;
+    	margin-top: 65px;
+    }
+    
+    .txt_keep_login{
+    text-align: center;
+    color: #9A9595;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.14px;
+    }
+
+    #insert_id, #insert_passwd{
+        margin-bottom: 10px;
+    }
+
+    ul{
+        margin : 300px;
+        margin-left: 30px;
+        padding: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 300px;
+        height: 38px;
+        flex-shrink: 0;
+    }
+    li{
+        list-style-type: none;
+    }
+    .search{
+        text-align: center;
+        list-style-type: none;
+        color: #9A9595;
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: 0.12px;
+        text-decoration: none;
+    }
+    p{
+        display: block;
+        margin-left: 10px;
+        margin-top: 200px;
+    }
+    p > input{
+        padding-left: 35px;
+        width: 382px;
+        height: 44px;
+        flex-shrink: 0;
+        border-radius: 8px;
+        border: 1px solid #9A9595;
+        background: rgba(200, 100, 100, 0.00);
+        color: #9A9595;
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: 0.12px;
+    }
+    #loginInput{
+		margin: auto;
+	}
+	.register{
+	margin-top: -235px;
+	}
+	
+</style>
+<script>
+function checkId(){
+        let id = document.querySelector("#insert_id");
+        let id_result = document.querySelector("#id_result");
+        
+        if(!id.value){
+            id_result.innerHTML = "아이디를 입력하세요.";
+            id_result.classList.remove("true");
+            id_result.classList.add("false");
+            return false;
+        } else{
+            id_result.innerHTML = "";
+            id_result.classList.remove("false");
+            id_result.classList.add("true");
+            return true;
+        }
+        
+    }
+    
+    function checkPasswd(){
+        let pass = document.querySelector("#insert_passwd");
+        let passwd_result = document.querySelector("#passwd_result");
+
+        if(!pass.value){
+            passwd_result.innerHTML = "비밀번호를 입력하세요.";
+            passwd_result.classList.remove("true");
+            passwd_result.classList.add("false");
+            return false;
+        } else{
+            passwd_result.innerHTML = "";
+            passwd_result.classList.remove("false");
+            passwd_result.classList.add("true");
+            return true;
+        }
+            
+        }
+
+
+     // form을 db로 전송하기 전에 한번 더 체크 하는 곳   
+        window.onload = () => {
+        document.querySelector("#insert_id").onkeyup = checkId;
+        document.querySelector("#insert_passwd").onkeyup = checkPasswd;
+
+        document.querySelector("#log").onsubmit = (e) => {
+            if(!checkId() || !checkPasswd()){
+                e.preventDefault();
+            }
+            }
+        }
+
+</script>
+<body>
+	<div class="container">
+        <div class="title">
+            <img src="/img/Parking_logo.png" alt="">
+            <a class="header">공유주차</a>
+        </div>
+        <form action="app/loginInput" id="loginInput" method="post">
+            <p>
+                <input type="text" id="insert_id" name="userId" placeholder="아이디 입력">
+                <input type="password" id="insert_passwd" name="passwd" placeholder="비밀번호 입력">
+                <button type="submit" class='btn_login'>로그인</button>
+            </p>
+                <input type="checkbox" id="check_keep_login"><a class="txt_keep_login">로그인 상태 유지</a>
+            <div class="register">
+                <ul>
+                    <li><a href="/idsearch" class="search" id="search_id">아이디 찾기</a></li>
+                    <li><a href="/searchPasswd" class="search" id="search_pass">비밀번호 찾기</a></li>
+                    <li><a href="/membership" class="search" id="search_register">회원가입</a></li>
+                </ul>
+            </div>
+		</form>
+                 <a th:href="${apiURL}" class='btn_kakao_login'>카카오 로그인</a>
+	</div>
+</body>
+</html>
