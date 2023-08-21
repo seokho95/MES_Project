@@ -53,17 +53,24 @@
 		${kind} like '%' || #{search} || '%'
 	</select>
 
-	<!-- //아이디 조회로 신원확인 후 비밀번호 찾기 -->
-	<select id="getUser" parameterType="user">
-		select * from USER_ where
-		user_id = #{userId}
-	</select>
+	   <!-- 비밀번호 체크 -->
+    <select id="checkPasswd" parameterType="string" resultType="string">
+       select * from USER_ where user_pw = #{passwd}
+   </select>
+
+	
+	
 
 	<!-- //비밀번호 변경 -->
 	<update id="updatePasswd" parameterType="user">
 		update USER_ set user_pw
 		= #{passwd} where user_id = #{userId}
 	</update>
+	
+	   <!-- 비밀번호 찾기 아이디인증용 아이디 조회 -->
+   <select id="searchId" parameterType="string" resultType="string">
+       select user_id from USER_ where user_id = #{userId}
+   </select>
 	
 	<!--// mypage 회원번호 불러오기 -->
 	<select id="getMembershipNumber" parameterType="String" resultType="String">
