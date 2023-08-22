@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="EUC-KR">
+	<title>Insert title here</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--	<link rel="stylesheet" href="header_css/style.css">-->
+	<link rel="stylesheet" href="map/mainmap.css">
+</head>
+
+<body>
+	<th:block th:include="/headfoot/header.html"></th:block>
+
+	<div id="frame">
+		<div class="map_wrap">
+			<div id="map"
+				style="width:100%;height:200%;margin-top:20px;margin-bottom: 20px;position:relative;overflow:hidden;">
+			</div>
+			<div id="mapwrap">
+				<div id="menu_wrap" class="bg_white">
+					<div class="option">
+						<div>
+							<form onsubmit="searchPlaces(); return false;">
+								키워드 : <input type="text" value="신촌역" id="keyword" size="15">
+								<button type="submit">검색하기</button>
+							</form>
+						</div>
+					</div>
+					<hr>
+					<ul id="placesList"></ul>
+					<div id="pagination"></div>
+					</hr>
+				</div>
+			</div>
+			<!-- 지도 위에 표시될 마커 카테고리 -->
+			<div class="category">
+				<ul>
+					<li id="parkingAll" onclick="changeMarker('parkingAll')">
+						<span class="ico_comm ico_parkingAll"></span>
+						모든 주차장
+					</li>
+					<li id="parkingSearch" onclick="changeMarker('parkingSearch')">
+						<span class="ico_comm ico_parkingSearch"></span>
+						검색한 주차장
+					</li>
+					<li id="shareParking" onclick="changeMarker('shareParking')">
+						<span class="ico_comm ico_shareParking"></span>
+						공유주차장
+					</li>
+				</ul>
+			</div>
+
+			<script type="text/javascript"
+				src="//dapi.kakao.com/v2/maps/sdk.js?appkey=608c66173f7dc52920beb7f3ca34c9f8&libraries=services"></script>
+			<script>
+
+				// 마커를 담을 배열입니다
+				var markers = [];
+
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+					mapOption = {
+						center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+						level: 3 // 지도의 확대 레벨
+					};
+
+				// 지도를 생성합니다    
+				var map = new kakao.maps.Map(mapContainer, mapOption);
+
+				// 장소 검색 객체를 생성합니다
+				var ps = new kakao.maps.services.Places();
+
+				// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+				var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
+
+
+
+
+				var parkingAllPositions = [
+					new kakao.maps.LatLng(37.499590490909185, 127.0263723554437),
+					new kakao.maps.LatLng(37.499427948430814, 127.02794423197847),
+					new kakao.maps.LatLng(37.498553760499505, 127.02882598822454),
+					new kakao.maps.LatLng(37.497625593121384, 127.02935713582038),
+					new kakao.maps.LatLng(37.49646391248451, 127.02675574250912),
+					new kakao.maps.LatLng(37.49629291770947, 127.02587362608637),
+					new kakao.maps.LatLng(37.49754540521486, 127.02546694890695)
+				];
+
+				// 편의점 마커가 표시될 좌표 배열입니다
+				var parkingSearchPositions = [
+					new kakao.maps.LatLng(37.497535461505684, 127.02948149502778),
+					new kakao.maps.LatLng(37.49671536281186, 127.03020491448352),
+					new kakao.maps.LatLng(37.496201943633714, 127.02959405469642),
+					new kakao.maps.LatLng(37.49640072567703, 127.02726459882308),
+					new kakao.maps.LatLng(37.49640098874988, 127.02609983175294),
+					new kakao.maps.LatLng(37.49932849491523, 127.02935780247945),
+					new kakao.maps.LatLng(37.49996818951873, 127.02943721562295)
+				];
+
+				// 주차장 마커가 표시될 좌표 배열입니다
+				var shareParkingPositions = [
+					new kakao.maps.LatLng(37.49966168796031, 127.03007039430118),
+					new kakao.maps.LatLng(37.499463762912974, 127.0288828824399),
+					new kakao.maps.LatLng(37.49896834100913, 127.02833986892401),
+					new kakao.maps.LatLng(37.49893267508434, 127.02673400572665),
+					new kakao.maps.LatLng(37.49872543597439, 127.02676785815386),
+					new kakao.maps.LatLng(37.49813096097184, 127.02591949495914),
+					new kakao.maps.LatLng(37.497680616783086, 127.02518427952202)
+				];
+
+				var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
+				parkingAllMarkers = [], // 커피숍 마커 객체를 가지고 있을 배열입니다
+					parkingSearchMarkers = [], // 편의점 마커 객체를 가지고 있을 배열입니다
+					shareParkingMarkers = []; // 주차장 마커 객체를 가지고 있을 배열입니다
+
+
+				createparkingAllMarkers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
+				createparkingSearchMarkers(); // 편의점 마커를 생성하고 편의점 마커 배열에 추가합니다
+				createshareParkingMarkers(); // 주차장 마커를 생성하고 주차장 마커 배열에 추가합니다
+
+				changeMarker('parkingAll'); // 지도에 커피숍 마커가 보이도록 설정합니다    
+
+
+				// 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
+				function createMarkerImage(src, size, options) {
+					var markerImage = new kakao.maps.MarkerImage(src, size, options);
+					return markerImage;
+				}
+
+				// 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
+				function createMarker(position, image) {
+					var marker = new kakao.maps.Marker({
+						position: position,
+						image: image
+					});
+
+					return marker;
+				}
+
+				// 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
+				function createparkingAllMarkers() {
+
+					for (var i = 0; i < parkingAllPositions.length; i++) {
+
+						var imageSize = new kakao.maps.Size(22, 26),
+							imageOptions = {
+								spriteOrigin: new kakao.maps.Point(10, 0),
+								spriteSize: new kakao.maps.Size(36, 98)
+							};
+
+						// 마커이미지와 마커를 생성합니다
+						var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
+							marker = createMarker(parkingAllPositions[i], markerImage);
+
+						// 생성된 마커를 커피숍 마커 배열에 추가합니다
+						parkingAllMarkers.push(marker);
+					}
+				}
+
+				// 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다 
+				function setParkingAll(map) {
+					for (var i = 0; i < parkingAllMarkers.length; i++) {
+						parkingAllMarkers[i].setMap(map);
+					}
+				}
+
+				// 편의점 마커를 생성하고 편의점 마커 배열에 추가하는 함수입니다
+				function createparkingSearchMarkers() {
+					for (var i = 0; i < parkingSearchPositions.length; i++) {
+
+						var imageSize = new kakao.maps.Size(22, 26),
+							imageOptions = {
+								spriteOrigin: new kakao.maps.Point(10, 36),
+								spriteSize: new kakao.maps.Size(36, 98)
+							};
+
+						// 마커이미지와 마커를 생성합니다
+						var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
+							marker = createMarker(parkingSearchPositions[i], markerImage);
+
+						// 생성된 마커를 편의점 마커 배열에 추가합니다
+						parkingSearchMarkers.push(marker);
+					}
+				}
+
+				// 편의점 마커들의 지도 표시 여부를 설정하는 함수입니다
+				function setParkingSearch(map) {
+					for (var i = 0; i < parkingSearchMarkers.length; i++) {
+						parkingSearchMarkers[i].setMap(map);
+					}
+				}
+
+				// 주차장 마커를 생성하고 주차장 마커 배열에 추가하는 함수입니다
+				function createshareParkingMarkers() {
+					for (var i = 0; i < shareParkingPositions.length; i++) {
+
+						var imageSize = new kakao.maps.Size(22, 26),
+							imageOptions = {
+								spriteOrigin: new kakao.maps.Point(10, 72),
+								spriteSize: new kakao.maps.Size(36, 98)
+							};
+
+						// 마커이미지와 마커를 생성합니다
+						var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
+							marker = createMarker(shareParkingPositions[i], markerImage);
+
+						// 생성된 마커를 주차장 마커 배열에 추가합니다
+						shareParkingMarkers.push(marker);
+					}
+				}
+
+				// 주차장 마커들의 지도 표시 여부를 설정하는 함수입니다
+				function setShareParking(map) {
+					for (var i = 0; i < shareParkingMarkers.length; i++) {
+						shareParkingMarkers[i].setMap(map);
+					}
+
+				}
+
+				// 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
+				function changeMarker(type) {
+
+					var parkingAll = document.getElementById('parkingAll');
+					var parkingSearch = document.getElementById('parkingSearch');
+					var shareParking = document.getElementById('shareParking');
+
+					// 모든주차 카테고리가 클릭됐을 때
+					if (type === 'parkingAll') {
+
+
+						// 커피숍 카테고리를 선택된 스타일로 변경하고
+						parkingAll.className = 'menu_selected';
+
+						// 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
+						parkingSearch.className = '';
+						shareParking.className = '';
+
+
+						// 커피숍 마커들만 지도에 표시하도록 설정합니다
+						setParkingAll(map);
+						setParkingSearch(map);
+						setShareParking(map);
+
+					} else if (type === 'parkingSearch') { // 검색주차장 카테고리가 클릭됐을 때
+						parkingAll.className = '';
+						parkingSearch.className = 'menu_selected';
+						shareParking.className = '';
+
+						// 편의점 마커들만 지도에 표시하도록 설정합니다
+						setParkingAll(null);
+						setParkingSearch(map);
+						setShareParking(null);
+
+
+					} else if (type === 'shareParking') { // 공유주차장 카테고리가 클릭됐을 때
+						// 주차장 카테고리를 선택된 스타일로 변경하고
+						parkingAll.className = '';
+						parkingSearch.className = '';
+						shareParking.className = 'menu_selected';
+
+						// 주차장 마커들만 지도에 표시하도록 설정합니다
+						setParkingAll(null);
+						setParkingSearch(null);
+						setShareParking(map);
+
+
+					}
+				}
+
+				function geocodeAddress(address, callback) {
+					const geocoder = new kakao.maps.services.Geocoder();
+
+					geocoder.addressSearch(address, function (result, status) {
+						if (status === kakao.maps.services.Status.OK) {
+							callback(result[0].y, result[0].x); // 위도(y), 경도(x) 반환
+						}
+					});
+				}
+
+				// 맵 초기화 및 마커 표시 함수
+
+
+				// 예시로서 아래와 같이 마커를 생성하고 지도에 추가하는 코드를 작성합니다.
+
+				// 마커 생성 예시
+
+				// setShareParkingMarkers 함수를 정의하여 해당 마커들을 지도에 표시하는 로직을 추가합니다
+
+				// 키워드로 장소를 검색합니다
+				searchPlaces();
+
+				// 키워드 검색을 요청하는 함수입니다
+				function searchPlaces() {
+
+					var keyword = document.getElementById('keyword').value;
+
+					if (!keyword.replace(/^\s+|\s+$/g, '')) {
+						alert('키워드를 입력해주세요!');
+						return false;
+					}
+
+					// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+					ps.keywordSearch(keyword + "주차장", placesSearchCB);
+				}
+
+				// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+				function placesSearchCB(data, status, pagination) {
+					if (status === kakao.maps.services.Status.OK) {
+
+						// 정상적으로 검색이 완료됐으면
+						// 검색 목록과 마커를 표출합니다
+						displayPlaces(data);
+						// console.log(data);
+						// 페이지 번호를 표출합니다
+						displayPagination(pagination);
+
+					} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+
+						alert('검색 결과가 존재하지 않습니다.');
+						return;
+
+					} else if (status === kakao.maps.services.Status.ERROR) {
+
+						alert('검색 결과 중 오류가 발생했습니다.');
+						return;
+
+					}
+				}
+
+				// 검색 결과 목록과 마커를 표출하는 함수입니다
+				function displayPlaces(places) {
+					console.log(places);
+					var listEl = document.getElementById('placesList'),
+						menuEl = document.getElementById('menu_wrap'),
+						fragment = document.createDocumentFragment(),
+						bounds = new kakao.maps.LatLngBounds(),
+						listStr = '';
+
+
+					// 검색 결과 목록에 추가된 항목들을 제거합니다
+					removeAllChildNods(listEl);
+
+					// 지도에 표시되고 있는 마커를 제거합니다
+					removeMarker();
+
+					for (var i = 0; i < places.length; i++) {
+
+						// 마커를 생성하고 지도에 표시합니다
+						var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+							marker = addMarker(placePosition, i),
+							itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+						// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+						// LatLngBounds 객체에 좌표를 추가합니다
+						bounds.extend(placePosition);
+						// console.log(places[i]);
+						var place_url = places[i].place_url;
+						// console.log(url);
+						// 마커와 검색결과 항목에 mouseover 했을때
+
+						// 해당 장소에 인포윈도우에 장소명을 표시합니다
+						// mouseout 했을 때는 인포윈도우를 닫습니다
+						(function (marker, title, url) {
+							kakao.maps.event.addListener(marker, 'mouseover', function () {
+								displayInfowindow(marker, title, url);
+							});
+
+							// kakao.maps.event.addListener(marker, 'mouseout', function() {
+							//     infowindow.close();
+							// });
+
+							itemEl.onclick = function () {
+
+								infowindow.close();
+								displayInfowindow(marker, title, url);
+								map.setCenter(marker);
+							};
+
+
+						})(marker, places[i].place_name, place_url);
+
+						fragment.appendChild(itemEl);
+					}
+
+					// 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+					listEl.appendChild(fragment);
+					menuEl.scrollTop = 0;
+
+					// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+					map.setBounds(bounds);
+				}
+
+				// 검색결과 항목을 Element로 반환하는 함수입니다
+				function getListItem(index, places) {
+
+					var el = document.createElement('li'),
+						itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
+							'<div class="info">' +
+							'   <h5>' + places.place_name + '</h5>';
+
+					if (places.road_address_name) {
+						itemStr += '    <span>' + places.road_address_name + '</span>' +
+							'   <span class="jibun gray">' + places.address_name + '</span>';
+					} else {
+						itemStr += '    <span>' + places.address_name + '</span>';
+					}
+
+					itemStr += '  <span class="tel">' + places.phone + '</span>' +
+						'</div>';
+
+					el.innerHTML = itemStr;
+					el.className = 'item';
+
+					return el;
+				}
+
+				// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+				function addMarker(position, idx) {
+					var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+						imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+						imgOptions = {
+							spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+							spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+							offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+						},
+						markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+						marker = new kakao.maps.Marker({
+							position: position, // 마커의 위치
+							image: markerImage
+						});
+
+					marker.setMap(map); // 지도 위에 마커를 표출합니다
+					markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+					return marker;
+				}
+
+				// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+				function removeMarker() {
+					for (var i = 0; i < markers.length; i++) {
+						markers[i].setMap(null);
+					}
+					markers = [];
+				}
+				function shareParkingMap() {
+					const mapContainer = document.getElementById('kakaoMap');
+					const options = {
+						center: new kakao.maps.LatLng(37.566826, 126.9786567), // 초기 맵 중심 위치 (서울 시청)
+						level: 3 // 맵 확대/축소 레벨
+					};
+
+					const map = new kakao.maps.Map(mapContainer, options);
+
+					const address = "#{address}"; // 검색하고자 하는 주소
+
+					// 주소로부터 좌표를 얻어와서 마커 표시
+					geocodeAddress(address, function (latitude, longitude) {
+						const markerOptions = {
+							position: new kakao.maps.LatLng(latitude, longitude),
+							map: map
+						};
+
+						const marker = new kakao.maps.Marker(markerOptions);
+					});
+				}
+				// initMap 함수 호출하여 맵 초기화 및 마커 표시
+				shareParkingMap();// 이 부분에서 실제 마커를 생성하고 지도에 추가하는 작업을 수행해야 합니다.
+				// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+				function displayPagination(pagination) {
+					var paginationEl = document.getElementById('pagination'),
+						fragment = document.createDocumentFragment(),
+						i;
+
+					// 기존에 추가된 페이지번호를 삭제합니다
+					while (paginationEl.hasChildNodes()) {
+						paginationEl.removeChild(paginationEl.lastChild);
+					}
+
+					for (i = 1; i <= pagination.last; i++) {
+						var el = document.createElement('a');
+						el.href = "#";
+						el.innerHTML = i;
+
+						if (i === pagination.current) {
+							el.className = 'on';
+						} else {
+							el.onclick = (function (i) {
+								return function () {
+									pagination.gotoPage(i);
+								}
+							})(i);
+						}
+
+						fragment.appendChild(el);
+					}
+					paginationEl.appendChild(fragment);
+				}
+
+				// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+				// 인포윈도우에 장소명을 표시합니다
+
+				function displayInfowindow(marker, title, url) {
+					var content = `<div style= display:block; width:100%; height: auto; padding:5px;z-index:1;">
+      <span id="abc">${title}</span><br>
+      <a id="cba" href='${url}'>상세 페이지&nbsp&nbsp|</a> <a id="cab" href="http://localhost9999/pay">&nbsp&nbsp결제하기</a>
+    </div>`;
+					console.log("url : ", url);
+					infowindow.setContent(content);
+					infowindow.open(map, marker);
+				}
+
+
+				// 검색결과 목록의 자식 Element를 제거하는 함수입니다
+				function removeAllChildNods(el) {
+					while (el.hasChildNodes()) {
+						el.removeChild(el.lastChild);
+					}
+				}
+				document.addEventListener("DOMContentLoaded", function () {
+					var menuItems = document.querySelectorAll(".menu a");
+
+					menuItems.forEach(function (item) {
+						item.addEventListener("click", function () {
+							alert("클릭");
+						});
+					});
+				});
+			</script>
+
+		</div>
+		<th:block th:include="/headfoot/footer.html"></th:block>
+</body>
+
+</html>
