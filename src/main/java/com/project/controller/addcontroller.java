@@ -37,8 +37,9 @@ public class addcontroller {
 	@RequestMapping(value = "/map/action", method = RequestMethod.POST)
 	public String AddParkingRequest(AddParkingDTO dto,
 			@RequestParam(value = "addFile", required = true) MultipartFile addfileload,
-			@RequestParam(value = "picFile", required = true) MultipartFile picfileload, HttpServletResponse response,
-			HttpSession session, HttpServletRequest request) throws JSONException {
+			@RequestParam(value = "picFile", required = true) MultipartFile picfileload, 
+			HttpServletResponse response, HttpSession session, 
+			HttpServletRequest request) throws JSONException {
 		// 데이터 오는지 확인
 		System.out.println(dto);
 		System.out.println(addfileload.getOriginalFilename());

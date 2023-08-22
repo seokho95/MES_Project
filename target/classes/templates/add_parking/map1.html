@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 
+
+<head>
+	<title>parking_map</title>
+	<link rel="stylesheet" href="add_parking/map/map1.css">
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e83e62af35f66760b7dff824464e2e4&libraries=services"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</head>
+<th:block th:include="/headfoot/header.html"></th:block>
+
 <div id="container">
-
-	<head>
-		<title>parking_map</title>
-		<link rel="stylesheet" href="add_parking/map/map1.css">
-		<script type="text/javascript"
-			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e83e62af35f66760b7dff824464e2e4&libraries=services"></script>
-		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-	</head>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
@@ -146,7 +148,6 @@
 
 	<body>
 
-		<th:block th:include="/headfoot/header.html"></th:block>
 		<form class="add_info" action="/map/action" method="post" enctype="multipart/form-data">
 			<table class="add">
 				<tr>
@@ -248,7 +249,7 @@
 
 </div>
 
-<th:bloclk th:include="/headfoot/footer.html">
+<th:block th:include="/headfoot/footer.html">
 	</th:block>
 	<!--<p>
 		<span>상호명:공유주차 |</span>
