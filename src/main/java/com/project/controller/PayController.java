@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.project.dto.UserDTO;
 import com.project.service.KakaoPay;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,10 +34,14 @@ public class PayController {
 	}
 
 	@GetMapping("/kakaoPaySuccess")
-	public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
+	public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model,HttpServletRequest request) {
 		System.out.println("kakaoPaySuccess get............................................");
 		System.out.println("kakaoPaySuccess pg_token : " + pg_token);
 		model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token));
+		
+		String userNum = ((UserDTO)request.getSession().getAttribute("user")).getMembershipNumber();
+		
+		
 		return "pay/pay_result";
 	}
 
@@ -51,5 +56,7 @@ public class PayController {
 		}
 		return "pay/pay_cancel";
 	}
+	
+	
 
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.project.mapper.UseparkingMapper">
+	
+
+  	<select id="shareParking" parameterType="String" resultType="addparking">
+  	select p.address, p.park_size, p.price, p.park_description
+  	from parking p, user_ u
+  	where p.user_num = u.user_num and u.user_num = #{userNum}
+  	</select>
+  	
+  	<select id="ticketParking" parameterType="String" resultType="user">
+  	select u.car_num, p.address
+  	from parking p, user_ u
+  	where p.user_num = u.user_num and u.user_num = #{userNum}
+  	</select>
+  	
+  </mapper>
