@@ -1,6 +1,7 @@
 package com.project.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class UseParkingService {
 	}
 
 
-	public UserDTO ticketParking(String userNum) {
+	public List<Map<String, Object>> ticketParking(String userNum) {
 		return mapper.ticketParking(userNum);
 	}
 

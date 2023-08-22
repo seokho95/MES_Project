@@ -71,7 +71,7 @@ public class LoginController {
 		} else {
 			view.addObject("res", "로그인 실패");
 		}
-		view.setViewName("login_html/main.html");
+		view.setViewName("redirect:/main");
 
 		return view;
 	}

@@ -2,6 +2,7 @@ package com.project.controller;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,20 +29,18 @@ public class UseParkingController {
 	public ModelAndView detail( ModelAndView view, HttpServletRequest request) {
 	  
 		String userNum = ((UserDTO)request.getSession().getAttribute("user")).getMembershipNumber();
+			System.out.println(userNum);
 			
 			List<AddParkingDTO> parking_list = useparkingService.shareParking(userNum);
+			System.out.println(parking_list.toString());
 			
-			UserDTO user_info = useparkingService.ticketParking(userNum);
+			List<Map<String, Object>> usePaking = useparkingService.ticketParking(userNum);
 			System.out.println(useparkingService.ticketParking(userNum).toString());
 			
+			view.addObject("ticket", usePaking);
 			
+			view.addObject("parking_list", parking_list);
 			
-	        view.addObject("parking_list", parking_list);
-	        System.out.println(parking_list.toString());
-	        
-	        view.addObject("user_info", user_info);
-	        System.out.println(user_info.toString());
-	        
 	        view.setViewName("useparking/useparking");
 	    
 	    return view;
