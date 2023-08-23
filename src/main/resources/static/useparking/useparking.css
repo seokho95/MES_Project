@@ -1,27 +1,29 @@
-@charset "utf-8";
-.container{	
+body{
 	width: 1280px;
-	margin:0 auto;
-	padding: 0 auto;	
-}
-.header{
-	width: 100%;
-	height: 170px;
-	background-color: blueviolet;
+	padding: 0px;
+	margin: 0 auto;
+
 }
 
-.head_table{
-	width: 100%;
-	margin-top:20px;
-	margin-bottom: 20px;
+/* Ticket Container Styles */
+.ticket_container{
+	padding: 20px;
+	position: relative;
 	
 }
-
-td{
-	font-size: 35px;
-}
 .td_used{
-	text-align: right;
+	
+	font-size: 30px;
+	font-weight: bold;
+	position: absolute;
+	right: 270px;
+	
+}
+.td_ing{
+	font-size: 30px;
+	font-weight: bold;
+	position: absolute;
+	left: 210px;
 }
 
 .ticket {
@@ -30,30 +32,26 @@ td{
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(149, 85, 255, 0.5);
-  margin-bottom: 20px;
-  
-  
+  margin-top: 50px;
+  margin-left: 135px;	
+	
 }
-.used_ticket{
+
+.used_ticket {
   background-color: white;
   width: 300px;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(149, 85, 255, 0.5);
-  margin-bottom: 20px; 
-  margin-left: 600px; 
-  
- 
-  }
-.ticket_row{
-	display: inline-flex;
-	
+  margin-top: 50px;
+  margin-left: 250px;
 }
-  
 
+/* Ticket Header Styles */
 .ticket_header {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .ticket_header img {
@@ -67,63 +65,60 @@ td{
   margin: 0;
 }
 
+/* Ticket Details Styles */
 .ticket-details {
   margin-top: 20px;
 }
 
-.parking_name,
-.parking_name {
+.car_num,
+.parking_address {
   font-size: 15px;
   margin: 5px 0;
 }
 
-.share_container{
-	margin-top:200px;
-	max-width: 1000px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 1px 2px 5px rgb(149, 85, 255);
-    border-radius: 5px;
+/* Share Container Styles */
+.share_container {
+  border-radius: 10px;
+  background-color: #9555FF;
+  padding: 20px;
+  margin-top: 20px;
 }
-.share{
-	font-size: 35px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .parking-details {
-    margin-top: 20px;
-  }
-  .parking-details h2 {
-    margin-bottom: 10px;
-  }
-  .parking-details p {
-    margin: 5px 0;
-  }  	
+
+.share {
+  font-size: 30px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+.parking-details {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+/* Buttons Styles */
 .buttons {
-  display: block;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 20px;
 }
 
 .btn_home,
 .btn_cancel {
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
   background-color: #9555FF;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 20px;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 10px;
+  margin: 20px;
 }
 
 .btn_home:hover,
 .btn_cancel:hover {
   background-color: #BF9BFA;
 }
-
-.kakaopay{
-
-}
-

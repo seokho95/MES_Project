@@ -36,8 +36,8 @@ public class KakaoPay {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		params.add("cid", "TC0ONETIME");
 		params.add("partner_order_id", "A1001");
-		params.add("partner_user_id", "jsh18");
-		params.add("item_name", "주차장A");
+		params.add("partner_user_id", "jsh18181");
+		params.add("item_name", "코리아it아카데미 신촌점");
 		params.add("quantity", "1");
 		params.add("total_amount", "3000");
 		params.add("tax_free_amount", "300");
@@ -83,7 +83,7 @@ public class KakaoPay {
 	        params.add("cid", "TC0ONETIME");
 	        params.add("tid", kakaoPayReadyVO.getTid());
 	        params.add("partner_order_id", "A1001");
-	        params.add("partner_user_id", "jsh18");
+	        params.add("partner_user_id", "jsh18181");
 	        params.add("pg_token", pg_token);
 	        params.add("total_amount", "3000");
 	        

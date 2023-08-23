@@ -7,7 +7,7 @@
 <body>
 <link rel="stylesheet" href="/pay/pay_result.css">
  <div class="container">
-	 
+	 <div class="success">
   <h2>카카오페이 결제가 정상적으로 완료되었습니다.</h2>
   
   <p class="info">결제일시: [[${info.approved_at}]]</p>
@@ -16,7 +16,9 @@
   <p class="info">상품수량: [[${info.quantity}]]</p>
   <p class="info">결제금액: [[${info.amount.total}]]</p>
   <p class="info">결제방법: [[${info.payment_method_type}]]</p>
-	
+  
+  <button class="btn_home" onclick="location.href='http://localhost:9999/mainmap'">홈으로</button>
+	 </div>
  </div>
 
 </body>

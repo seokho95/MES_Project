@@ -39,7 +39,7 @@ public class PayController {
 		System.out.println("kakaoPaySuccess pg_token : " + pg_token);
 		model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token));
 		
-		String userNum = ((UserDTO)request.getSession().getAttribute("user")).getMembershipNumber();
+		
 		
 		
 		return "pay/pay_result";
