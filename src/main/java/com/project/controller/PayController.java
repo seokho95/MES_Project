@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class PayController {
 	private KakaoPay kakaopay;
+	private UserDTO UserDTO;
 
 	public PayController(KakaoPay kakaopay) {
 		super();
@@ -23,24 +24,29 @@ public class PayController {
 	}
 
 	@RequestMapping("/payMain")
-	public String pay_main() {
+	public String pay_main(Model model,HttpServletRequest request) {
+		
+		String carNum = ((UserDTO)request.getSession().getAttribute("user")).getCarNumber();
+		UserDTO car = kakaopay.getUserByUserCar(carNum);
+		model.addAttribute("carNum",carNum);
 		return "pay/pay_main";
 	}
 	
 	// 단건 결제 요청
 	@RequestMapping("/kakaoPay")
-	public String pay() {
-		return "redirect:" + kakaopay.kakaoPayReady();
+	public String pay(HttpServletRequest request) {
+		return "redirect:" + kakaopay.kakaoPayReady(request);
 	}
 
 	@GetMapping("/kakaoPaySuccess")
 	public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model,HttpServletRequest request) {
 		System.out.println("kakaoPaySuccess get............................................");
 		System.out.println("kakaoPaySuccess pg_token : " + pg_token);
-		model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token));
+		model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token, request));	
 		
-		
-		
+		String carNum = ((UserDTO)request.getSession().getAttribute("user")).getCarNumber();
+		UserDTO car = kakaopay.getUserByUserCar(carNum);
+		model.addAttribute("carNum",carNum);
 		
 		return "pay/pay_result";
 	}

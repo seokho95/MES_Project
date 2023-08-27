@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/pay/pay_main.css">
+<script>
+    function showKakaoIcon() {
+		alert("결제를 진행해주세요.");
+        var kakaoIcon = document.getElementById("kakaoIcon");
+        kakaoIcon.style.display = "inline-block";
+    }
+</script>
 </head>
 <body>
 	
@@ -19,12 +26,12 @@
 		<p><img src="/img/img_pay/return.svg" alt="재입차 아이콘"> 한번 출차 후 재입차</p>
 	
 	<div class="carNO_check">
-      <p>145히1511</p>
-      <button class="btn_yes" onclick="alert('pay버튼을 눌러주세요')">차량번호가 맞습니다</button>
-      <button class="btn_no" onclick="alert('마이페이지로 이동합니다');location.href='http://localhost:9999/myPage'">차랑번호가 아닙니다.</button>
-      </div>
-
-	<a href="/kakaoPay"><img src="/img/img_pay/kakaopayIcon.png" alt="카카오 페이 아이콘"></a>
+      <p>차번호: [[${carNum}]]</p>
+    </div>
+      <button class="btn_yes" onclick="showKakaoIcon()">차량번호가 맞습니다</button>
+      <button class="btn_no" onclick="alert('마이페이지에서 차량번호를 등록해주세요');location.href='http://localhost:9999/myPage'">차량번호가 아닙니다.</button>
+		<br>
+	<a id="kakaoIcon" href="/kakaoPay" style="display: none;"><img src="/img/img_pay/kakaopayIcon.png" alt="카카오 페이 아이콘"></a>
 		</div>
 	</div>
 </body>

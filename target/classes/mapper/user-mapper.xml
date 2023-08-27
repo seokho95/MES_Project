@@ -85,5 +85,19 @@
    		SET car_num = #{carNumber} 
     	WHERE user_id = #{userId}
 	</update>
+	
+	
+	
+	 <select id="getUserByUserId" parameterType="String" resultType="user">
+        SELECT user_id
+        FROM user_
+        WHERE user_id = #{userId}
+    </select>
+    
+    <select id="getUserByUserCar" parameterType="String" resultType="user">
+        SELECT car_num 
+        FROM user_
+        WHERE car_num = #{carNumber}
+    </select>
 
 </mapper>

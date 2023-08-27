@@ -31,4 +31,14 @@ public interface UserMapper {
 	int updatePasswd(String newPass);
 	
 	String searchId(String insertId);
+	
+	
+	
+
+	UserDTO getUserByUserId(String userId);
+
+	UserDTO getUserByUserCar(String carNum);
+	
+	
+
 }

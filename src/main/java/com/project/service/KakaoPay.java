@@ -12,17 +12,27 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.project.dto.UserDTO;
+import com.project.mapper.UserMapper;
 import com.project.vo.KakaoPayApprovalVO;
 import com.project.vo.KakaoPayReadyVO;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Service
 public class KakaoPay {
+	private UserMapper userMapper;
+	
+	 public KakaoPay(UserMapper userMapper) {
+	        this.userMapper = userMapper;
+	    }
+	
 	private static final String HOST = "https://kapi.kakao.com";
-
+	
 	private KakaoPayReadyVO kakaoPayReadyVO;
 	private KakaoPayApprovalVO kakaoPayApprovalVO;
 	
-	public String kakaoPayReady() {
+	public String kakaoPayReady(HttpServletRequest request) {
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -31,12 +41,19 @@ public class KakaoPay {
 		headers.add("Authorization", "KakaoAK " + "179ce8e54dfed176e68267f067200634");
 		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
 		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
-
+		
+		String userId = ((UserDTO)request.getSession().getAttribute("user")).getUserId();
+		UserDTO user = userMapper.getUserByUserId(userId);
+		
+//		String carNum = ((UserDTO)request.getSession().getAttribute("user")).getCarNumber();
+//		UserDTO car = userMapper.getUserByUserCar(carNum);
+		
 		// 서버로 요청할 Body
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("cid", "TC0ONETIME");
 		params.add("partner_order_id", "A1001");
-		params.add("partner_user_id", "jsh18181");
+		params.add("partner_user_id",userId);
+//		params.add("carNum", carNum);
 		params.add("item_name", "코리아it아카데미 신촌점");
 		params.add("quantity", "1");
 		params.add("total_amount", "3000");
@@ -44,8 +61,11 @@ public class KakaoPay {
 		params.add("approval_url", "http://localhost:9999/kakaoPaySuccess");
 		params.add("cancel_url", "http://localhost:9999/kakaoPayCancel");
 		params.add("fail_url", "http://localhost:9999/kakaoPaySuccessFail");
+		
+		
 
 		HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+		
 
 		try {
 			kakaoPayReadyVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/ready"), body,
@@ -65,7 +85,7 @@ public class KakaoPay {
 
 	}
 	
-	 public KakaoPayApprovalVO kakaoPayInfo(String pg_token) {
+	 public KakaoPayApprovalVO kakaoPayInfo(String pg_token,HttpServletRequest request) {
 		 
 	        System.out.println("KakaoPayInfoVO............................................");
 	        System.out.println("-----------------------------");
@@ -77,13 +97,20 @@ public class KakaoPay {
 	        headers.add("Authorization", "KakaoAK " + "179ce8e54dfed176e68267f067200634");
 	        headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
 	        headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
-	 
+	        
+	        String userId = ((UserDTO)request.getSession().getAttribute("user")).getUserId();
+			UserDTO user = userMapper.getUserByUserId(userId);
+			
+//			String carNum = ((UserDTO)request.getSession().getAttribute("user")).getCarNumber();
+//			UserDTO car = userMapper.getUserByUserCar(carNum);
+			
 	        // 서버로 요청할 Body
-	        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+	        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 	        params.add("cid", "TC0ONETIME");
 	        params.add("tid", kakaoPayReadyVO.getTid());
 	        params.add("partner_order_id", "A1001");
-	        params.add("partner_user_id", "jsh18181");
+	        params.add("partner_user_id", userId);
+//	        params.add("carNum", carNum);
 	        params.add("pg_token", pg_token);
 	        params.add("total_amount", "3000");
 	        
@@ -105,4 +132,8 @@ public class KakaoPay {
 	        
 	        return null;
 	    }
+
+	public UserDTO getUserByUserCar(String carNum) {
+		return userMapper.getUserByUserCar(carNum);
+	}
 }
