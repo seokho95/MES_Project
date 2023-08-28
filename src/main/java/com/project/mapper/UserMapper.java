@@ -38,6 +38,8 @@ public interface UserMapper {
 	UserDTO getUserByUserId(String userId);
 
 	UserDTO getUserByUserCar(String carNum);
+
+	String userNum(String userNum);
 	
 	
 

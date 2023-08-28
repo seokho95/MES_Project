@@ -5,11 +5,14 @@ import java.util.Enumeration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.dto.UserDTO;
 import com.project.service.KakaoPay;
+import com.project.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -17,21 +20,44 @@ import jakarta.servlet.http.HttpServletRequest;
 public class PayController {
 	private KakaoPay kakaopay;
 	private UserDTO UserDTO;
+	private UserService userService;
 
-	public PayController(KakaoPay kakaopay) {
+	
+	
+
+	
+
+	public PayController(KakaoPay kakaopay, UserService userService) {
 		super();
 		this.kakaopay = kakaopay;
+		this.userService = userService;
 	}
-
+	
+	@ResponseBody
 	@RequestMapping("/payMain")
 	public String pay_main(Model model,HttpServletRequest request) {
 		
-		String carNum = ((UserDTO)request.getSession().getAttribute("user")).getCarNumber();
-		UserDTO car = kakaopay.getUserByUserCar(carNum);
+//		String carNum = ((UserDTO)request.getSession().getAttribute("user")).getCarNumber();
+//		UserDTO car = kakaopay.getUserByUserCar(carNum);
+		String message ="";
+		String userNum = ((UserDTO)request.getSession().getAttribute("user")).getMembershipNumber();
+		String carNum = userService.userNum(userNum);
+		model.addAttribute("carNum",carNum);
+		if(carNum == null) {
+			message = "<script>alert('마이페이지로 이동합니다. 차량번호를 등록해주세요');location.href='/myPage'</script>";
+			return message;
+		}else {
+			message = "<script> location.href='/payMainA'</script>";
+			return message;
+		}	
+	}
+	@RequestMapping("/payMainA")
+	public String payMainA(Model model,HttpServletRequest request) {
+		String userNum = ((UserDTO)request.getSession().getAttribute("user")).getMembershipNumber();
+		String carNum = userService.userNum(userNum);
 		model.addAttribute("carNum",carNum);
 		return "pay/pay_main";
 	}
-	
 	// 단건 결제 요청
 	@RequestMapping("/kakaoPay")
 	public String pay(HttpServletRequest request) {

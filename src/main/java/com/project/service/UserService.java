@@ -84,4 +84,10 @@ public class UserService {
 	        mapper.updateCarNumber(userId, carNumber);
 	    }
 
+	
+
+	public String userNum(String userNum) {
+		return mapper.userNum(userNum);
+	}
+
 }

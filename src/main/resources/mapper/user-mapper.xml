@@ -100,4 +100,9 @@
         WHERE car_num = #{carNumber}
     </select>
 
+	<select id="userNum" parameterType="String" resultType="String">
+		select car_num
+		from user_
+		where user_num = #{userNum}
+	</select>
 </mapper>
