@@ -70,8 +70,8 @@ public class PayController {
 		System.out.println("kakaoPaySuccess pg_token : " + pg_token);
 		model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token, request));	
 		
-		String carNum = ((UserDTO)request.getSession().getAttribute("user")).getCarNumber();
-		UserDTO car = kakaopay.getUserByUserCar(carNum);
+		String userNum = ((UserDTO)request.getSession().getAttribute("user")).getMembershipNumber();
+		String carNum = userService.userNum(userNum);
 		model.addAttribute("carNum",carNum);
 		
 		return "pay/pay_result";
